@@ -1,0 +1,89 @@
+{
+  "name": "byespec",
+  "displayName": "byespec",
+  "description": "Hide Elixir typespecs",
+  "publisher": "mvkvc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mvkvc/byespec"
+  },
+  "version": "0.0.13",
+  "icon": "misc/logo.png",
+  "engines": {
+    "vscode": "^1.40.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:elixir"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "byespec.hideSig",
+        "title": "ByeSpec: hide Elixir typespecs"
+      },
+      {
+        "command": "byespec.showSig",
+        "title": "ByeSpec: show Elixir typespecs"
+      }
+    ],
+    "configuration": {
+      "title": "Hide Elixir typespecs",
+      "properties": {
+        "byespec.enabled": {
+          "type": "boolean",
+          "description": "Enables/disables the default hiding mechanism",
+          "default": true
+        },
+        "byespec.fold": {
+          "type": "boolean",
+          "description": "Fold (collapse) sig blocks",
+          "default": true
+        },
+        "byespec.backgroundColor": {
+          "type": "string",
+          "description": "The background color of the hidden signature region (CSS notation, eg: #2266AA), leave empty for transparent",
+          "default": ""
+        },
+        "byespec.opacity": {
+          "type": "number",
+          "description": "Opacity of the signature area (0: transparent, 1: opaque)",
+          "default": 0.3
+        },
+        "byespec.showIcon": {
+          "type": "boolean",
+          "description": "Show a sig-line indicator icon on the left side gutter",
+          "default": false
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./script/byespec.js --bundle --outfile=./extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.11.0",
+    "@types/vscode": "^1.40.0",
+    "esbuild": "^0.17.10",
+    "eslint": "^6.8.0",
+    "glob": "^7.1.6",
+    "lodash": ">=4.17.21",
+    "mocha": "^7.1.2",
+    "typescript": "^3.8.3",
+    "vscode-test": "^1.3.0"
+  },
+  "dependencies": {
+    "@vscode/vsce": "^2.18.0"
+  }
+}

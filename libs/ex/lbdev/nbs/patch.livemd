@@ -1,0 +1,292 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# patch
+
+## Testing
+
+https://github.com/brettbeatty/experiments_elixir/blob/master/module_patching.livemd
+
+```elixir
+defmodule ModulePatching do
+  defmacro defmodule(alias, version, do_block) do
+    [do: block] = do_block
+    module = Macro.expand(alias, __CALLER__)
+    version = Macro.expand(version, __CALLER__)
+    store_block(module, version, block)
+
+    quote do
+      defmodule unquote(alias) do
+        (unquote_splicing(patches_so_far(module, version)))
+      end
+    end
+  end
+
+  defp store_block(module, version, block) do
+    :ets.insert(__MODULE__, {{module, version}, block})
+  end
+
+  defp patches_so_far(module, version) do
+    __MODULE__
+    |> :ets.select([{{{module, :"$1"}, :"$2"}, [{:"=<", :"$1", version}], [:"$2"]}])
+    |> Enum.flat_map(&unblock/1)
+  end
+
+  defp unblock(ast)
+  defp unblock({:__block__, _meta, block}), do: block
+  defp unblock(ast), do: [ast]
+
+  def start do
+    with :undefined <- :ets.whereis(__MODULE__) do
+      __MODULE__ = :ets.new(__MODULE__, [:ordered_set, :named_table])
+    end
+
+    :ok
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, ModulePatching, <<70, 79, 82, 49, 0, 0, 12, ...>>, {:start, 0}}
+```
+
+```elixir
+import ModulePatching, only: [defmodule: 3]
+ModulePatching.start()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+```elixir
+defmodule MyModule, 1 do
+  def a(x), do: x + 1
+  def b(x), do: x * 2
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, MyModule, <<70, 79, 82, 49, 0, 0, 6, ...>>, {:b, 1}}
+```
+
+```elixir
+MyModule.a(3)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+4
+```
+
+```elixir
+MyModule.b(4)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+8
+```
+
+```elixir
+# MyModule.c(5)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+defmodule MyModule, 2 do
+  def c(x), do: x * x
+end
+```
+
+```elixir
+MyModule.a(3)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+4
+```
+
+```elixir
+MyModule.b(4)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+8
+```
+
+```elixir
+# MyModule.c(5)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+# defmodule MyModule, 3 do
+#   def a(x), do: rem(x, 3)
+# end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+# 3 + 1, not rem(3, 3)
+MyModule.a(3)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+4
+```
+
+```elixir
+# defmodule MyModule, 3 do
+#   defoverridable a: 1
+#   def a(x), do: rem(x, 3)
+# end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+# rem(3, 3)
+MyModule.a(3)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+4
+```
+
+```elixir
+# defmodule MyModule, 4 do
+#   defoverridable c: 1
+#   def c(x), do: x |> super() |> div(2)
+# end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+# div(5 * 5, 2)
+# MyModule.c(5)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+Idk what this is
+
+```elixir
+# defmodule ETSCounter do
+#   @table_name :counter
+
+#   def get() do
+#     :ets.update_counter(@table_name, :counter, {2, 1}, {:counter, 0})
+#   end
+
+#   def start_link() do
+#     :ets.new(@table_name, [:named_table, :set, :public, :protected, {:keypos, 1}])
+#   end
+# end
+
+# defmodule Lbdev do
+#   defmacro lbdef(module_name, do: block) do
+#     counter = ETSCounter.get()
+#     module_name_with_counter = Module.concat([module_name, counter])
+
+#     quote do
+#       defmodule unquote(module_name_with_counter) do
+#         unquote(block)
+#       end
+#     end
+#   end
+# end
+
+# # Start the ETS counter
+# {:ok, _} = ETSCounter.start_link()
+
+# # Define the Test module with lbdef macro
+# Lbdev.lbdef Test do
+#   def greet() do
+#     "Hello, this is version 1."
+#   end
+# end
+```
+
+```elixir
+defmodule ETSCounter do
+  @table_name :counter
+
+  def get() do
+    :ets.update_counter(@table_name, :counter, {2, 1}, {:counter, 0})
+  end
+
+  def start_link() do
+    :ets.new(@table_name, [:named_table, :set, :public, :protected, {:keypos, 1}])
+    :ok
+  end
+end
+
+defmodule Lbdev do
+  defmacro lbdef(module_name, do: block) do
+    counter = ETSCounter.get()
+    module_name_with_counter = Module.concat([module_name, counter])
+
+    quote do
+      defmodule unquote(module_name_with_counter) do
+        unquote(block)
+      end
+    end
+  end
+end
+
+# Start the ETS counter
+{:ok, _} = ETSCounter.start_link()
+
+defmodule TestWrapper do
+  # Define the Test module with lbdef macro
+  Lbdev.lbdef Test do
+    def greet() do
+      "Hello, this is version 1."
+    end
+  end
+end
+```

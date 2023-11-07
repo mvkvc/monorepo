@@ -1,0 +1,3 @@
+# walter
+
+Discord personal handler.

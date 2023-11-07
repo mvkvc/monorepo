@@ -1,0 +1,33 @@
+[submodule "vendor/tt-buda-demos"]
+	path = vendor/tt-buda-demos
+	url = git@github.com:mvkvc/tt-buda-demos.git
+[submodule "vendor/tenstorrent_puzzles"]
+	path = vendor/tenstorrent_puzzles
+	url = git@github.com:mvkvc/tenstorrent_puzzles.git
+[submodule "vendor/llama_cpp-rs"]
+	path = vendor/llama_cpp-rs
+	url = git@github.com:mvkvc/llama_cpp-rs.git
+[submodule "vendor/portboy"]
+	path = vendor/portboy
+	url = git@github.com:mvkvc/portboy.git
+[submodule "vendor/phoenix_live_react"]
+	path = vendor/phoenix_live_react
+	url = git@github.com:mvkvc/phoenix_live_react.git
+[submodule "vendor/kino_util"]
+	path = vendor/kino_util
+	url = git@github.com:mvkvc/kino_util.git
+[submodule "vendor/litestream"]
+	path = vendor/litestream
+	url = git@github.com:mvkvc/litestream.git
+[submodule "vendor/kino_fly"]
+	path = vendor/kino_fly
+	url = git@github.com:mvkvc/kino_fly.git
+[submodule "vendor/articuno"]
+	path = vendor/articuno
+	url = git@github.com:mvkvc/articuno.git
+[submodule "vendor/dockyard_academy"]
+	path = vendor/dockyard_academy
+	url = git@github.com:mvkvc/dockyard_academy.git
+[submodule "vendor/cell_driven_development"]
+	path = vendor/cell_driven_development
+	url = git@github.com:einariii/cell_driven_development.git

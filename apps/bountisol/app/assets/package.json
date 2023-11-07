@@ -1,0 +1,48 @@
+{
+  "name": "assets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "build": "yarn build:rm && yarn build:cp && yarn build:ts && yarn build:esb && yarn build:tw",
+    "build:rm": "rimraf ./out && rimraf ../priv/static/assets/app.js",
+    "build:cp": "cp ../../programs/target/types/* ./js/idl/",
+    "build:ts": "tsc --project ./tsconfig.json",
+    "build:esb": "node ./build.js",
+    "build:tw": "tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css",
+    "build:tww": "tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css --watch",
+    "format": "prettier --write ./js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "autoprefixer": "^10.4.16",
+    "daisyui": "^4.4.14",
+    "esbuild": "^0.19.8",
+    "esbuild-plugins-node-modules-polyfill": "^1.6.1",
+    "postcss": "^8.4.31",
+    "prettier": "^3.1.0",
+    "rimraf": "^5.0.5",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@bonfida/spl-name-service": "^2.0.0-alpha.25",
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/wallet-adapter-base": "^0.9.23",
+    "@solana/wallet-adapter-react": "^0.15.35",
+    "@solana/wallet-adapter-react-ui": "^0.9.34",
+    "@solana/wallet-adapter-solflare": "^0.6.28",
+    "@solana/web3.js": "^1.87.6",
+    "@web3auth/sign-in-with-solana": "^3.0.0",
+    "phoenix": "file:../deps/phoenix",
+    "phoenix_html": "file:../deps/phoenix_html",
+    "phoenix_live_react": "file:../deps/phoenix_live_react",
+    "phoenix_live_view": "file:../deps/phoenix_live_view",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}

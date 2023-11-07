@@ -1,0 +1,31 @@
+VERSION 0.7
+
+ARG --global DATE=(date +%y-%m-%d)
+ARG --global DEBIAN_VERSION=slim-bullseye
+ARG --global PYTHON_VERSION=3.10
+
+image:
+    FROM python:${PYTHON_VERSION}-${DEBIAN_VERSION}
+    WORKDIR /app
+    RUN python3 -m pip install --user pipx
+    ENV PATH="/root/.local/bin:$PATH"
+    RUN python3 -m pipx ensurepath
+    RUN pipx install poetry
+
+deps:
+    FROM +image
+    COPY . .
+    RUN poetry install --no-root
+
+build:
+    FROM +deps
+    RUN poetry run mkdocs build
+
+docker:
+    FROM +build
+    CMD ["mkdocs", "serve"]
+    SAVE IMAGE akashi-site:latest
+    SAVE IMAGE --push registry.fly.io/akashi-site:latest registry.fly.io/akashi-site:${DATE}
+
+deploy:
+    RUN fly deploy --image registry.fly.io/akashi-site:latest

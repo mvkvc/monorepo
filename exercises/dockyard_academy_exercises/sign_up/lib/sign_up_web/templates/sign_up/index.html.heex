@@ -1,0 +1,30 @@
+<%= form_for @changeset, Routes.sign_up_path(@conn, :create), fn f -> %>
+  <%= hidden_input f, :_csrf_token, value: Plug.CSRFProtection.get_csrf_token() %>
+
+  <div>
+    <%= label f, :username, "Username:" %>
+    <%= text_input f, :username, required: true %>
+  </div>
+
+  <div>
+    <%= label f, :password, "Password:" %>
+    <%= password_input f, :password, required: true %>
+  </div>
+
+  <div>
+    <%= label f, :age, "Age:" %>
+    <%= number_input f, :age %>
+  </div>
+
+  <div>
+    <%= label f, :birthdate, "Birthdate:" %>
+    <%= date_input f, :birthdate %>
+  </div>
+
+  <div>
+    <%= label f, :terms_and_conditions, "Terms and Conditions:" %>
+    <%= checkbox f, :terms_and_conditions, required: true %>
+  </div>
+
+  <%= submit "Sign up" %>
+<% end %>

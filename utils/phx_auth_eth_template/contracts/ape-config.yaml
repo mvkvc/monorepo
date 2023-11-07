@@ -1,0 +1,9 @@
+name: akashi
+plugins:
+  - name: vyper
+# contracts_folder: contracts
+# default_ecosystem: ethereum
+# ethereum:
+#   default_network: mainnet-fork
+#   mainnet_fork:
+#     default_provider: hardhat

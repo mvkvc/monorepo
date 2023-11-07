@@ -1,0 +1,23 @@
+site_name: Akashi Systems
+plugins:
+  - blog:
+      post_dir: "{blog}/articles"
+      draft_if_future_date: true
+      draft_on_serve: true
+theme:
+  name: material
+  features:
+    - navigation.tabs
+nav:
+  - Home:
+    - index.md
+  - Docs:
+    - docs/index.md
+  - Notes:
+    - notes/architecture.md
+    - notes/product.md
+    - notes/spec_id.md
+    - notes/tech.md
+    - notes/research.md
+  - Blog:
+    - blog/index.md

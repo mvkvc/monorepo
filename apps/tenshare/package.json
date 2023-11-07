@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "daisyui": "^4.11.1",
+    "tailwindcss": "^3.3.1"
+  },
+  "scripts": {
+    "tailwind": "npx tailwindcss -i ./tenshare/static/css/input.css -o ./tenshare/static/css/output.css",
+    "tailwind:watch": "npx tailwindcss -i ./tenshare/static/css/input.css -o ./tenshare/static/css/output.css --watch",
+    "django": "python ./tenshare/manage.py runserver",
+    "start": "conc --raw \"npm run django\" \"npm run tailwind:watch\"",
+    "shell": "python ./tenshare/manage.py shell"
+  }
+}

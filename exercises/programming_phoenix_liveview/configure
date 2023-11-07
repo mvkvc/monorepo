@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ ! -d .git ]; then
+    echo "Must be run from the root of the project"
+    usage
+fi
+
+if [[ -z "$MIX_HOME" || -z "$HEX_HOME" ]]; then
+    echo "Ensure MIX_HOME and HEX_HOME are set"
+    usage
+fi
+
+if [[ -d .nix_mix || ! -d .nix_hex ]]; then
+    mkdir -p .nix_mix
+    mkdir -p .nix_hex
+    mix do local.rebar --force --if-missing
+    mix do local.hex --force --if-missing
+    mix archive.install --force hex phx_new 1.6.15
+    mix escript.install --force hex livebook 0.8.0
+    mix deps.get
+    mix deps.compile
+fi

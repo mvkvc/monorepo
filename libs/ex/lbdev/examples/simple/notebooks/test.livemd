@@ -1,0 +1,100 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# test
+
+## Section
+
+```elixir
+defmodule BoomBap do
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, BoomBap, <<70, 79, 82, 49, 0, 0, 4, ...>>, nil}
+```
+
+### HEllo
+
+THis is a test for somethign
+
+BOOM
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+def boom do
+  raise "HELLO"
+end
+```
+
+```elixir
+# export
+
+defmodule AAA do
+  def something do
+    IO.puts("else")
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, AAA, <<70, 79, 82, 49, 0, 0, 6, ...>>, {:something, 0}}
+```
+
+```elixir
+AAA.something()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+else
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+```elixir
+# export
+
+defmodule CCC do
+  def something do
+    IO.puts("else")
+  end
+end
+
+CCC.something()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+else
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+<!-- Learn more at https://mermaid-js.github.io/mermaid -->
+
+```mermaid
+graph TD;
+  A-->B;
+  A-->C;
+  B-->D;
+  C-->D;
+```
+
+```elixir
+
+```

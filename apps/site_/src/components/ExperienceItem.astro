@@ -1,0 +1,42 @@
+---
+const { title, link, institution, group, location, startDate, endDate, description } = Astro.props;
+---
+
+<div class="mb-4 space-y-1">
+	<div class="flex items-center justify-between">
+		{
+			link ? (
+				<h2>
+					<a class="cactus-link" href={link}>
+						{title}
+					</a>
+				</h2>
+			) : (
+				<h2>{title}</h2>
+			)
+		}
+	</div>
+	<div class="flex items-center justify-between italic">
+		{
+			group ? (
+				<h3>
+					{institution}, {group}
+				</h3>
+			) : (
+				<h3>{institution}</h3>
+			)
+		}
+		{location ? <p>{location}</p> : null}
+	</div>
+	{
+		startDate || endDate ? (
+			<p class="font-style: italic text-gray-500">
+				{startDate ? `${startDate}` : ""}
+				{startDate && endDate ? " - " : ""}
+				{endDate ? `${endDate}` : ""}
+			</p>
+		) : null
+	}
+
+	{description ? <p class="">{description}</p> : null}
+</div>

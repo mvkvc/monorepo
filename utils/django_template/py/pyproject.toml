@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "lend-look"
+version = "0.1.0"
+description = ""
+authors = ["Marko Vukovic <mvkvc.git@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.10"
+django = "4.1"
+django-cors-headers = "^3.14.0"
+django-migration-linter = "^4.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.0"
+pytest-django = "^4.5.2"
+black = "^23.3.0"
+ruff = "^0.0.261"
+mypy = "1.1.1"
+django-stubs = {extras = ["compatible-mypy"], version = "^1.16.0"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "lend_look.settings"
+python_files = ["**/tests.py", "**/test_*.py",  "**/*_tests.py"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.isort]
+force-single-line = true
+force-sort-within-sections = true
+
+[tool.mypy]
+python_version = "3.10"
+# disallow_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+warn_unused_ignores = true
+plugins = ["mypy_django_plugin.main"]
+
+[[tool.mypy.overrides]]
+module = []
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "lend_look.settings"

@@ -1,0 +1,10 @@
+.history/
+.vscode/
+.vscode-test/
+node_modules/
+test/
+.eslintrc.json
+.gitignore
+jsconfig.json
+**/*.map
+*.vsix

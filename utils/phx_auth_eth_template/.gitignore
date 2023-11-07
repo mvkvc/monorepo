@@ -1,0 +1,7 @@
+.direnv/
+.nix_hex/
+.nix_mix/
+.vscode/
+*.code-workspace
+.tmp-earthly-out
+**/*/.secret

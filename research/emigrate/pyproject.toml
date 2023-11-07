@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "emigrate"
+version = "0.1.0"
+description = ""
+authors = ["Marko Vukovic <mvkvc.git@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+datasets = "^2.19.1"
+torch = "^2.3.0"
+sentence-transformers = "^2.7.0"
+openai = "^1.30.3"
+tqdm = "^4.66.4"
+annoy = "^1.17.3"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^4.2.1"
+nbqa = "^1.8.5"
+black = "^24.4.2"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

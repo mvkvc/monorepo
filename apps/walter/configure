@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ ! -d .git ]; then
+    echo "ERROR: Must be run from the root of the repository."
+    exit 1
+fi
+
+if [[ -z "$MIX_HOME" || -z "$HEX_HOME" ]]; then
+    echo "Ensure the \$MIX_HOME and \$HEX_HOME environment variables are set. (Should be done in the Nix flake.)"
+    exit 1
+fi
+
+echo "Installing rebar, hex, and livebook..."
+mkdir -p "$MIX_HOME" &&
+mkdir -p "$HEX_HOME" &&
+mix local.rebar --force --if-missing &&
+mix "do" local.rebar --force --if-missing &&
+mix "do" local.hex --force --if-missing &&
+if [ ! -f "$MIX_HOME/escripts/livebook" ]; then mix escript.install --force hex livebook; fi
+
+echo "Installing dependencies..."
+mix deps.get

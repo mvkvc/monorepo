@@ -1,0 +1,11 @@
+# test
+
+## Section
+
+```elixir
+config = KuboEx.config!()
+```
+
+```elixir
+KuboEx.Rpc.files_ls(config)
+```

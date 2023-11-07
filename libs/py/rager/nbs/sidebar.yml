@@ -1,0 +1,18 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - core.ipynb
+      - dag.ipynb
+      - embed.ipynb
+      - rerank.ipynb
+      - retrieve.ipynb
+      - tokens.ipynb
+      - section: api
+        contents:
+          - api/app.ipynb
+          - api/client.ipynb
+          - api/lifespan.ipynb
+      - section: watcher
+        contents:
+          - watcher/app.ipynb

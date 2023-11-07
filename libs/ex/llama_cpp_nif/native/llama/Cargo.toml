@@ -1,0 +1,15 @@
+[package]
+name = "llama"
+version = "0.1.0"
+authors = []
+edition = "2021"
+
+[lib]
+name = "llama"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+#llama_cpp = { version = "0.3.0", path = "../../../../llama_cpp-rs/crates/llama_cpp" }
+llama_cpp = { git = "https://github.com/mvkvc/llama_cpp-rs.git" }
+rustler = "0.30.0"

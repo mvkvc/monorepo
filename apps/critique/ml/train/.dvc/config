@@ -1,0 +1,6 @@
+[core]
+    analytics = false
+    remote = b2
+['remote "b2"']
+    url = s3://mvkvc-artifact/
+    endpointurl = https://s3.us-west-002.backblazeb2.com

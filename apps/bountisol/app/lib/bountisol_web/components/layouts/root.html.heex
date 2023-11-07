@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title>
+      <%= assigns[:page_title] || "bountisol" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+  </head>
+  <header class="flex flex-row items-center p-6 justify-between">
+    <div class="flex flex-row items-center text-center space-x-4">
+      <.link href={~p"/"} class="text-3xl italic font-semibold font-mono text-center align-middle">
+        bountisol
+      </.link>
+    </div>
+    <ul class="flex flex-row space-x-4 items-center">
+      <%= if @current_user do %>
+        <%= if @current_user.domain do %>
+          <li>
+            <p><%= @current_user.domain %></p>
+          </li>
+        <% else %>
+          <li>
+            <p><%= Bountisol.Accounts.truncate_address(@current_user.address) %></p>
+          </li>
+        <% end %>
+      <% end %>
+      <details class="dropdown">
+        <summary class="m-1 btn">Menu</summary>
+        <ul class="p-2 space-y-1 shadow dropdown-content bg-base-100 rounded-box">
+          <li>
+            <.link navigate={~p"/"} class="btn w-28">
+              Home
+            </.link>
+          </li>
+          <li>
+            <.link navigate={~p"/bounties"} class="btn w-28">
+              Bounties
+            </.link>
+          </li>
+          <li>
+            <.link navigate={~p"/submissions"} class="btn w-28">
+              Submissions
+            </.link>
+          </li>
+          <li>
+            <.link navigate={~p"/users/settings"} class="btn w-28">
+              Settings
+            </.link>
+          </li>
+        </ul>
+      </details>
+      <li>
+        <div class="">
+          <%= live_render(@conn, BountisolWeb.SignInLive, id: "sign-in") %>
+        </div>
+      </li>
+    </ul>
+  </header>
+  <body class="bg-antialiased">
+    <.flash_group flash={@flash} />
+    <div class={if @conn.request_path == "/", do: "", else: "p-4 mx-8"}>
+      <%= @inner_content %>
+    </div>
+  </body>
+</html>

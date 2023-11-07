@@ -1,0 +1,29 @@
+{
+  "name": "bitflip_btc",
+  "version": "0.1.0",
+  "description": "",
+  "main": "build/src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --project ./tsconfig.json",
+    "start": "node ./build/src/index.js",
+    "starte": "node ./build/src/example.js",
+    "dev": "nodemon ./src/index.ts",
+    "format": "prettier --write ./src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.2",
+    "@types/node": "^20.11.16",
+    "nodemon": "^3.0.3",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "o1js": "0.16.*",
+    "mina-signer": "^3.0.0"
+  }
+}

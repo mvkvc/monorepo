@@ -1,0 +1,12 @@
+[submodule "libs/ipfs_pinning_service_api"]
+	path = libs/ipfs_pinning_service_api
+	url = git@github.com:mvkvc/ipfs_pinning_service_api.git
+[submodule "libs/rein"]
+	path = libs/rein
+	url = git@github.com:mvkvc/rein.git
+[submodule "libs/bayex"]
+	path = libs/bayex
+	url = git@github.com:mvkvc/bayex.git
+[submodule "libs/snekmate"]
+	path = libs/snekmate
+	url = git@github.com:mvkvc/snekmate.git

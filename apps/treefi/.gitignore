@@ -1,0 +1,7 @@
+.db/
+.direnv/
+.nix_hex/
+.nix_mix/
+.elixir-tools
+.env
+*.code-workspace

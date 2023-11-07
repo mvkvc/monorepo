@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "rager"
+  site-url: "https://mvkvc.github.io/rager"
+  description: ""
+  repo-branch: main
+  repo-url: "https://github.com/mvkvc/rager"
