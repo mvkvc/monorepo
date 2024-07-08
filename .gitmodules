@@ -31,3 +31,6 @@
 [submodule "vendor/MultiPL-E"]
 	path = vendor/MultiPL-E
 	url = git@github.com:mvkvc/MultiPL-E.git
+[submodule "vendor/codecrafters_http_rust"]
+	path = vendor/codecrafters_http_rust
+	url = https://git.codecrafters.io/0033fcfaf73df2ec
