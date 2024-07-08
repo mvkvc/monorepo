@@ -1,0 +1,26 @@
+<header class="navbar flex flex-row justify-between p-4 bg-secondary items-center">
+  <div class="flex flex-row space-x-4">
+    <a href="/" class="text-xl font-semibold italic">OCTO</a>
+  </div>
+
+  <details class="dropdown sm:hidden">
+    <summary class="m-1 btn">Menu</summary>
+    <ul class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
+      <li><a href="/chat">Chat</a></li>
+      <li><button class="w-full text-left">Tools</button></li>
+      <li><button class="w-full text-left">Settings</button></li>
+    </ul>
+  </details>
+
+  <div class="hidden sm:flex flex-row space-x-4">
+    <a href="/chat" class="btn w-20">Chat</a>
+    <button class="btn w-20">Tools</button>
+    <button class="btn w-20">Settings</button>
+  </div>
+</header>
+<main>
+  <div>
+    <.flash_group flash={@flash} />
+    <%= @inner_content %>
+  </div>
+</main>

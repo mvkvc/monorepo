@@ -1,0 +1,3 @@
+.elixir_tools/
+.DS_Store
+*.code-workspace

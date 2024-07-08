@@ -1,0 +1,2 @@
+defmodule JobScraper do
+end

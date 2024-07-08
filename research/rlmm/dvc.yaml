@@ -1,0 +1,92 @@
+stages:
+  test:
+    cmd:
+    - touch data/.dummy_cache
+    deps:
+    - data/test
+    outs:
+    - data/.dummy_cache
+  csv:
+    cmd:
+    - mkdir -p data/csv/book_snapshot_25/BTCUSDT/
+    - mkdir -p data/csv/trades/BTCUSDT/
+    - cp -r data/raw/book_snapshot_25/BTCUSDT/* data/csv/book_snapshot_25/BTCUSDT/
+    - cp -r data/raw/trades/BTCUSDT/* data/csv/trades/BTCUSDT/
+    - gzip -d data/csv/book_snapshot_25/BTCUSDT/*.csv.gz
+    - gzip -d data/csv/trades/BTCUSDT/*.csv.gz
+    - mkdir -p data/csv/book_snapshot_25/ETHUSDT/
+    - mkdir -p data/csv/trades/ETHUSDT/
+    - cp -r data/raw/book_snapshot_25/ETHUSDT/* data/csv/book_snapshot_25/ETHUSDT/
+    - cp -r data/raw/trades/ETHUSDT/* data/csv/trades/ETHUSDT/
+    - gzip -d data/csv/book_snapshot_25/ETHUSDT/*.csv.gz
+    - gzip -d data/csv/trades/ETHUSDT/*.csv.gz
+    - mkdir -p data/csv/book_snapshot_25/ADAUSDT/
+    - mkdir -p data/csv/trades/ADAUSDT/
+    - cp -r data/raw/book_snapshot_25/ADAUSDT/* data/csv/book_snapshot_25/ADAUSDT/
+    - cp -r data/raw/trades/ADAUSDT/* data/csv/trades/ADAUSDT/
+    - gzip -d data/csv/book_snapshot_25/ADAUSDT/*.csv.gz
+    - gzip -d data/csv/trades/ADAUSDT/*.csv.gz
+    deps:
+    - data/.dummy_cache
+    - data/raw/book_snapshot_25/BTCUSDT/
+    - data/raw/trades/BTCUSDT/
+    - data/raw/book_snapshot_25/ETHUSDT/
+    - data/raw/trades/ETHUSDT/
+    - data/raw/book_snapshot_25/ADAUSDT/
+    - data/raw/trades/ADAUSDT/
+    outs:
+    - data/csv/book_snapshot_25/BTCUSDT/:
+        cache: false
+        persist: true
+    - data/csv/trades/BTCUSDT/:
+        cache: false
+        persist: true
+    - data/csv/book_snapshot_25/ETHUSDT/:
+        cache: false
+        persist: true
+    - data/csv/trades/ETHUSDT/:
+        cache: false
+        persist: true
+    - data/csv/book_snapshot_25/ADAUSDT/:
+        cache: false
+        persist: true
+    - data/csv/trades/ADAUSDT/:
+        cache: false
+        persist: true
+  parquet:
+    cmd:
+    - papermill --cwd nbs/stage_parquet.py -p path_input data/csv/book_snapshot_25/BTCUSDT/
+      -p output_path data/parquet/book_snapshot_25/BTCUSDT/ -p column_time timestamp
+      -p rename_time ts -p drop 'exchange,symbol,local_timestamp'papermill --cwd nbs/stage_parquet.py
+      -p path_input data/csv/trades/BTCUSDT/ -p output_path data/parquet/trades/BTCUSDT/
+      -p column_time timestamp -p rename_time ts -p drop 'exchange,symbol,local_timestamp,id'
+    - papermill --cwd nbs/stage_parquet.py -p path_input data/csv/book_snapshot_25/ETHUSDT/
+      -p output_path data/parquet/book_snapshot_25/ETHUSDT/ -p column_time timestamp
+      -p rename_time ts -p drop 'exchange,symbol,local_timestamp'papermill --cwd nbs/stage_parquet.py
+      -p path_input data/csv/trades/ETHUSDT/ -p output_path data/parquet/trades/ETHUSDT/
+      -p column_time timestamp -p rename_time ts -p drop 'exchange,symbol,local_timestamp,id'
+    - papermill --cwd nbs/stage_parquet.py -p path_input data/csv/book_snapshot_25/ADAUSDT/
+      -p output_path data/parquet/book_snapshot_25/ADAUSDT/ -p column_time timestamp
+      -p rename_time ts -p drop 'exchange,symbol,local_timestamp'papermill --cwd nbs/stage_parquet.py
+      -p path_input data/csv/trades/ADAUSDT/ -p output_path data/parquet/trades/ADAUSDT/
+      -p column_time timestamp -p rename_time ts -p drop 'exchange,symbol,local_timestamp,id'
+    deps:
+    - data/csv/book_snapshot_25/BTCUSDT/
+    - data/csv/trades/BTCUSDT/
+    - data/csv/book_snapshot_25/ETHUSDT/
+    - data/csv/trades/ETHUSDT/
+    - data/csv/book_snapshot_25/ADAUSDT/
+    - data/csv/trades/ADAUSDT/
+    outs: &id001
+    - data/parquet/book_snapshot_25/BTCUSDT/
+    - data/parquet/trades/BTCUSDT/
+    - data/parquet/book_snapshot_25/ETHUSDT/
+    - data/parquet/trades/ETHUSDT/
+    - data/parquet/book_snapshot_25/ADAUSDT/
+    - data/parquet/trades/ADAUSDT/
+  train:
+    cmd:
+    - papermill --cwd nbs nbs/train.ipynb nbs/train.ipynb
+    deps: *id001
+    outs:
+    - outs/

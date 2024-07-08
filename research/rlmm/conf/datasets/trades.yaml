@@ -1,0 +1,7 @@
+defaults:
+- base
+col_side: side
+col_price: price
+col_amount: amount
+path: ../data/test/parquet/trades/ETHUSDT
+_target_: rlmm.datasets.DatasetTrades

@@ -1,0 +1,15 @@
+#! /bin/bash
+
+if [[ -z "$MIX_HOME" || -z "$HEX_HOME" ]]; then
+    echo "Ensure \$MIX_HOME, and \$HEX_HOME environment variables are set. (They are usually set in the Nix flake.)"
+    exit 1
+fi
+
+mkdir -p "$MIX_HOME"
+mkdir -p "$HEX_HOME"
+mix do local.rebar --force  --if-missing
+mix do local.hex --force  --if-missing
+mix escript.install hex livebook --force --if-missing
+mix archive.install hex nerves_bootstrap --force --if-missing
+
+

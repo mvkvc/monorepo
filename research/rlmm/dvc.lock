@@ -1,0 +1,144 @@
+schema: '2.0'
+stages:
+  csv:
+    cmd: "mkdir -p data/csv/book_snapshot_25/BTCUSDT/\nmkdir -p data/csv/trades/BTCUSDT/\n\
+      cp -r data/raw/book_snapshot_25/BTCUSDT/* data/csv/book_snapshot_25/BTCUSDT/\n\
+      cp -r data/raw/trades/BTCUSDT/* data/csv/trades/BTCUSDT/\ngzip -d data/csv/book_snapshot_25/BTCUSDT/*.csv.gz\n\
+      gzip -d data/csv/trades/BTCUSDT/*.csv.gz\n\nmkdir -p data/csv/book_snapshot_25/ETHUSDT/\n\
+      mkdir -p data/csv/trades/ETHUSDT/\ncp -r data/raw/book_snapshot_25/ETHUSDT/*\
+      \ data/csv/book_snapshot_25/ETHUSDT/\ncp -r data/raw/trades/ETHUSDT/* data/csv/trades/ETHUSDT/\n\
+      gzip -d data/csv/book_snapshot_25/ETHUSDT/*.csv.gz\ngzip -d data/csv/trades/ETHUSDT/*.csv.gz\n\
+      \nmkdir -p data/csv/book_snapshot_25/ADAUSDT/\nmkdir -p data/csv/trades/ADAUSDT/\n\
+      cp -r data/raw/book_snapshot_25/ADAUSDT/* data/csv/book_snapshot_25/ADAUSDT/\n\
+      cp -r data/raw/trades/ADAUSDT/* data/csv/trades/ADAUSDT/\ngzip -d data/csv/book_snapshot_25/ADAUSDT/*.csv.gz\n\
+      gzip -d data/csv/trades/ADAUSDT/*.csv.gz\n\n"
+    deps:
+    - path: data/raw/book_snapshot_25/ADAUSDT/
+      md5: d6701f8445352d97157a1e949d30d147.dir
+      size: 9996302536
+      nfiles: 183
+    - path: data/raw/book_snapshot_25/BTCUSDT/
+      md5: 0dd7afa471643adf4312462708ee9a8f.dir
+      size: 13592052581
+      nfiles: 183
+    - path: data/raw/book_snapshot_25/ETHUSDT/
+      md5: bb974e8e453c73b1f2087792e915b077.dir
+      size: 14155935013
+      nfiles: 183
+    - path: data/raw/trades/ADAUSDT/
+      md5: 18c6182109afa4dc9ab621a2c0469528.dir
+      size: 2297861064
+      nfiles: 183
+    - path: data/raw/trades/BTCUSDT/
+      md5: 399d0d8c7672bdf34ec23f478ee95cb4.dir
+      size: 4915102909
+      nfiles: 183
+    - path: data/raw/trades/ETHUSDT/
+      md5: b7bb55b55236210612dee9e6ff7c6002.dir
+      size: 3663728747
+      nfiles: 183
+    outs:
+    - path: data/csv/book_snapshot_25/ADAUSDT/
+      md5: 25eecfea2eadbafa6a75363b3e88b602.dir
+      size: 110895347180
+      nfiles: 183
+    - path: data/csv/book_snapshot_25/BTCUSDT/
+      md5: c536b653ce263b46e5e9517a1e4aa408.dir
+      size: 131657634122
+      nfiles: 183
+    - path: data/csv/book_snapshot_25/ETHUSDT/
+      md5: c94fa6e6da0ba4537abac2404261135a.dir
+      size: 120126637459
+      nfiles: 183
+    - path: data/csv/trades/ADAUSDT/
+      md5: c86463eb812f9f9d5dc40011a7ab1567.dir
+      size: 13535861310
+      nfiles: 183
+    - path: data/csv/trades/BTCUSDT/
+      md5: 86320205d5a469176f5e8879d8899c21.dir
+      size: 28786922430
+      nfiles: 183
+    - path: data/csv/trades/ETHUSDT/
+      md5: f68b710c27a5fb67248e6656d602cb80.dir
+      size: 21467691700
+      nfiles: 183
+  parquet:
+    cmd: "poetry run python src/data/parquet.py --input data/csv/book_snapshot_25/BTCUSDT/\
+      \ --output data/parquet/book_snapshot_25/BTCUSDT/ --time_column timestamp --time_rename\
+      \ ts --drop exchange --drop symbol --drop local_timestamp\npoetry run python\
+      \ src/data/parquet.py --input data/csv/trades/BTCUSDT/ --output data/parquet/trades/BTCUSDT/\
+      \ --time_column timestamp --time_rename ts --drop exchange --drop symbol --drop\
+      \ local_timestamp --drop id\n\npoetry run python src/data/parquet.py --input\
+      \ data/csv/book_snapshot_25/ETHUSDT/ --output data/parquet/book_snapshot_25/ETHUSDT/\
+      \ --time_column timestamp --time_rename ts --drop exchange --drop symbol --drop\
+      \ local_timestamp\npoetry run python src/data/parquet.py --input data/csv/trades/ETHUSDT/\
+      \ --output data/parquet/trades/ETHUSDT/ --time_column timestamp --time_rename\
+      \ ts --drop exchange --drop symbol --drop local_timestamp --drop id\n\npoetry\
+      \ run python src/data/parquet.py --input data/csv/book_snapshot_25/ADAUSDT/\
+      \ --output data/parquet/book_snapshot_25/ADAUSDT/ --time_column timestamp --time_rename\
+      \ ts --drop exchange --drop symbol --drop local_timestamp\npoetry run python\
+      \ src/data/parquet.py --input data/csv/trades/ADAUSDT/ --output data/parquet/trades/ADAUSDT/\
+      \ --time_column timestamp --time_rename ts --drop exchange --drop symbol --drop\
+      \ local_timestamp --drop id\n\n"
+    deps:
+    - path: data/csv/book_snapshot_25/ADAUSDT/
+      md5: 25eecfea2eadbafa6a75363b3e88b602.dir
+      size: 110895347180
+      nfiles: 183
+    - path: data/csv/book_snapshot_25/BTCUSDT/
+      md5: c536b653ce263b46e5e9517a1e4aa408.dir
+      size: 131657634122
+      nfiles: 183
+    - path: data/csv/book_snapshot_25/ETHUSDT/
+      md5: c94fa6e6da0ba4537abac2404261135a.dir
+      size: 120126637459
+      nfiles: 183
+    - path: data/csv/trades/ADAUSDT/
+      md5: c86463eb812f9f9d5dc40011a7ab1567.dir
+      size: 13535861310
+      nfiles: 183
+    - path: data/csv/trades/BTCUSDT/
+      md5: 86320205d5a469176f5e8879d8899c21.dir
+      size: 28786922430
+      nfiles: 183
+    - path: data/csv/trades/ETHUSDT/
+      md5: f68b710c27a5fb67248e6656d602cb80.dir
+      size: 21467691700
+      nfiles: 183
+    outs:
+    - path: data/parquet/book_snapshot_25/ADAUSDT/
+      md5: 6a77136a1eda2fb9db7792312dc96383.dir
+      size: 25445968064
+      nfiles: 1646
+    - path: data/parquet/book_snapshot_25/BTCUSDT/
+      md5: 0235a5e92586f844ecccad499453e2b4.dir
+      size: 44778195977
+      nfiles: 1971
+    - path: data/parquet/book_snapshot_25/ETHUSDT/
+      md5: c2c46bc4827d945917ba1adc1e55f49a.dir
+      size: 40392321755
+      nfiles: 1789
+    - path: data/parquet/trades/ADAUSDT/
+      md5: c2aca950a9310f25b40fdc4bc9c14963.dir
+      size: 1399439679
+      nfiles: 218
+    - path: data/parquet/trades/BTCUSDT/
+      md5: 3fab1d653500ecb87f1ab4645d9aac6d.dir
+      size: 3525957331
+      nfiles: 369
+    - path: data/parquet/trades/ETHUSDT/
+      md5: 7643d69c08ea68a3a1f6a877ffd1a39f.dir
+      size: 2607398685
+      nfiles: 272
+  test:
+    cmd:
+    - touch data/.dummy_cache
+    deps:
+    - path: data/test
+      md5: a8c867c842c910f42b14a358f735bf8c.dir
+      size: 2862378479
+      nfiles: 42
+    outs:
+    - path: data/.dummy_cache
+      md5: d41d8cd98f00b204e9800998ecf8427e
+      size: 0

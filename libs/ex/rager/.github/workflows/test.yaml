@@ -1,0 +1,66 @@
+name: test
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        id: cache-deps
+        env:
+          cache-name: cache-elixir-deps
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ env.cache-name }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-${{ env.cache-name }}-
+
+      # Step: Define how to cache the `_build` directory. After the first run,
+      # this speeds up tests runs a lot. This includes not re-compiling our
+      # project's downloaded deps every run.
+      - uses: actions/cache@v3
+        id: cache-build
+        env:
+          cache-name: cache-compiled-build
+        with:
+          path: _build
+          key: ${{ runner.os }}-mix-${{ env.cache-name }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-${{ env.cache-name }}-
+            ${{ runner.os }}-mix-
+
+      # Step: Conditionally bust the cache when job is re-run.
+      # Sometimes, we may have issues with incremental builds that are fixed by
+      # doing a full recompile. In order to not waste dev time on such trivial
+      # issues (while also reaping the time savings of incremental builds for
+      # *most* day-to-day development), force a full recompile only on builds
+      # that are retried.
+      - run: |
+          mix deps.clean --all
+          mix clean
+        shell: sh
+        if: github.run_attempt != '1'
+
+      # Step: Download project dependencies. If unchanged, uses
+      # the cached version.
+      - run: mix deps.get
+
+      # Step: Compile the project treating any warnings as errors.
+      # Customize this step if a different behavior is desired.
+      # TODO: Add --warnings-as-errors flag
+      - run: mix compile
+
+      # Step: Execute the tests.
+      - run: mix test

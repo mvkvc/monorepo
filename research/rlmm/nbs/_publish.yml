@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 8c4dc677-0fa5-4851-ba88-15b45b5e7ca5
+      url: 'https://thesis.mvk.vc'
