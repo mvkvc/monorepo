@@ -1,8 +1,6 @@
 # mvkvc
 
-My personal monorepo.
-
-To initialize external repositories in the [`vendor/`](./vendor) folder run: `git submodule update --init --recursive`.
+@mvkvc's personal monorepo.
 
 ## Projects
 
