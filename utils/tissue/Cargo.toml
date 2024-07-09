@@ -6,6 +6,12 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+dirs = "5.0.1"
 rocket = "0.5.1"
-relative-path = "1.9.2"
+rust-embed = "8.4.0"
+serde = "1.0.204"
 webbrowser = "1.0.1"
+
+[dependencies.rocket_db_pools]
+version = "0.2.0"
+features = ["sqlx_sqlite"]

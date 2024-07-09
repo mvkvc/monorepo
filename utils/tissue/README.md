@@ -1,3 +1,3 @@
 # tissue
 
-Terminal issue tracker.
+Offline-first issue tracker.

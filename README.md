@@ -9,7 +9,6 @@ To initialize external repositories in the [`vendor/`](./vendor) folder run: `gi
 Here is a list of the projects complete enough to share:
 
 <!--- makeme start --->
-
 ### `apps`
 
 - [`bank_crawl`](./apps/bank_crawl/README.md)
@@ -72,5 +71,4 @@ Here is a list of the projects complete enough to share:
 - [`replicant`](./vendor/replicant/README.md)
   - **Description**: Decentralized local AI inference network.
   - **Tech**: Rust, WebAssembly, Tauri.
-
 <!--- makeme end --->
