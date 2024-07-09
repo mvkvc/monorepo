@@ -9,3 +9,5 @@ edition = "2021"
 clap = { version = "4.5.8", features = ["derive", "string"] }
 glob = "0.3.1"
 relative-path = "1.9.2"
+serde = "1.0.204"
+serde_yml = "0.0.10"
