@@ -41,6 +41,7 @@ defmodule Exboost.MixProject do
 
   defp deps do
     [
+      {:bloom, "~> 0.0.8"},
       {:req, "~> 0.5.0"},
       {:pgvector, "~> 0.3.0"},
       {:ex_aws, "~> 2.0"},
