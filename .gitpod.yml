@@ -8,31 +8,17 @@ tasks:
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
-    - alefragnani.project-manager
-    - amazonwebservices.aws-toolkit-vscode
-    - arrterian.nix-env-selector
-    - ayushh.vscode-anchor
     - bradlc.vscode-tailwindcss
-    - charliermarsh.ruff
     - christian-kohler.path-intellisense
-    - codeium.codeium
-    - codezombiech.gitignore
-    - continue.continue
-    - doppler.doppler-vscode
     - eamodio.gitlens
-    - eamodio.tsl-problem-matcher
     - elixir-lsp.elixir-ls
     - erlang-ls.erlang-ls
     - esbenp.prettier-vscode
     - foxundermoon.shell-format
-    - franneck94.c-cpp-runner
-    - fwcd.kotlin
     - genuitecllc.codetogether
     - github.vscode-pull-request-github
     - golang.go
     - hashicorp.terraform
-    - jeanp413.open-remote-ssh
-    - jnoortheen.nix-ide
     - julialang.language-julia
     - mads-hartmann.bash-ide-vscode
     - mikestead.dotenv
@@ -78,5 +64,3 @@ vscode:
     - vscjava.vscode-spring-boot-dashboard
     - vscjava.vscode-spring-initializr
     - vue.volar
-    - xaver.clang-format
-    - xyz.local-history

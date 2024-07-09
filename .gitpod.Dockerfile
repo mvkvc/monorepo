@@ -1,12 +1,12 @@
 FROM gitpod/workspace-full
 
-RUN sudo apt-get update -y
+RUN sudo apt-get -y update
 # Erlang
 RUN sudo apt-get -y install \
     build-essential \
     autoconf \
     m4 \
-    libncurses5-dev \
+    libncurses-dev \
     libwxgtk3.2-dev \
     libwxgtk-webview3.2-dev \
     libgl1-mesa-dev \
@@ -17,8 +17,7 @@ RUN sudo apt-get -y install \
     xsltproc \
     fop \
     libxml2-utils \
-    libncurses-dev \
-    openjdk-11-jdk
+    openjdk-17-jdk
 # Elixir
 RUN sudo apt-get -y install \
     unzip
