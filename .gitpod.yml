@@ -5,6 +5,7 @@ image:
 tasks:
   - init: |
       mise install
+      pipx install poetry
 
 vscode:
   extensions:
