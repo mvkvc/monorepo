@@ -1,5 +1,6 @@
 FROM gitpod/workspace-full
 
+RUN sudo apt-get update -y
 # Erlang
 RUN sudo apt-get -y install \
     build-essential \
@@ -18,7 +19,6 @@ RUN sudo apt-get -y install \
     libxml2-utils \
     libncurses-dev \
     openjdk-11-jdk
-
 # Elixir
 RUN sudo apt-get -y install \
     unzip
