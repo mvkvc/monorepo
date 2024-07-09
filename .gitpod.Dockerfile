@@ -27,4 +27,5 @@ RUN echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 
 RUN python3 -m pip install --user pipx
 RUN python3 -m pipx ensurepath
+ENV PATH="$HOME/.local/bin:$PATH"
 RUN pipx install poetry
