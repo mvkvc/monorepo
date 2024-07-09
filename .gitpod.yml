@@ -1,5 +1,6 @@
-image: gitpod/workspace-full
-  # file: .gitpod.Dockerfile
+image:
+  # gitpod/workspace-full
+  file: .gitpod.Dockerfile
 
 tasks:
   - init: |
@@ -8,59 +9,12 @@ tasks:
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
-    - bradlc.vscode-tailwindcss
-    - christian-kohler.path-intellisense
-    - eamodio.gitlens
-    - elixir-lsp.elixir-ls
     - erlang-ls.erlang-ls
-    - esbenp.prettier-vscode
-    - foxundermoon.shell-format
-    - genuitecllc.codetogether
-    - github.vscode-pull-request-github
-    - golang.go
-    - hashicorp.terraform
-    - julialang.language-julia
-    - mads-hartmann.bash-ide-vscode
-    - mikestead.dotenv
-    - mkhl.direnv
-    - ms-azuretools.vscode-docker
-    - ms-python.debugpy
+    - elixir-lsp.elixir-ls
     - ms-python.python
-    - ms-toolsai.jupyter
-    - ms-toolsai.jupyter-keymap
-    - ms-toolsai.jupyter-renderers
-    - ms-toolsai.vscode-jupyter-cell-tags
-    - ms-toolsai.vscode-jupyter-slideshow
-    - ms-vscode.makefile-tools
-    - mtxr.sqltools
-    - mtxr.sqltools-driver-pg
-    - mtxr.sqltools-driver-sqlite
-    - nomicfoundation.hardhat-solidity
-    - pomdtr.excalidraw-editor
-    - prisma.prisma
-    - quarto.quarto
-    - redhat.ansible
-    - redhat.java
-    - redhat.vscode-yaml
     - rust-lang.rust-analyzer
-    - samuelcolvin.jinjahtml
-    - scala-lang.scala
-    - scalameta.metals
-    - sumneko.lua
-    - tailscale.vscode-tailscale
+    - franneck94.c-cpp-runner
+    - mads-hartmann.bash-ide-vscode
+    - mkhl.direnv
     - tamasfe.even-better-toml
-    - teabyii.ayu
-    - tobermory.es6-string-html
-    - tomoki1207.pdf
-    - unifiedjs.vscode-mdx
-    - vadimcn.vscode-lldb
-    - victorbjorklund.phoenix
-    - vmware.vscode-spring-boot
-    - vscjava.vscode-java-debug
-    - vscjava.vscode-java-dependency
-    - vscjava.vscode-java-pack
-    - vscjava.vscode-java-test
-    - vscjava.vscode-maven
-    - vscjava.vscode-spring-boot-dashboard
-    - vscjava.vscode-spring-initializr
-    - vue.volar
+    - redhat.vscode-yaml

@@ -7,8 +7,8 @@ RUN sudo apt-get -y install \
     autoconf \
     m4 \
     libncurses-dev \
-    libwxgtk3.2-dev \
-    libwxgtk-webview3.2-dev \
+    libwxgtk3.0-gtk3-dev \
+    libwxgtk-webview3.0-gtk3-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libpng-dev \
@@ -24,3 +24,7 @@ RUN sudo apt-get -y install \
 
 RUN curl https://mise.run | sh
 RUN echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
+
+RUN python3 -m pip install --user pipx
+RUN python3 -m pipx ensurepath
+RUN pipx install poetry
