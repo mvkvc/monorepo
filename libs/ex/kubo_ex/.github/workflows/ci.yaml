@@ -1,0 +1,68 @@
+name: ci
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - lib/**
+      - test/**
+      - mix.lock
+  pull_request:
+    branches:
+      - main
+    paths:
+      - lib/**
+      - test/**
+      - mix.lock
+
+env:
+  ERLANG_VERSION: "25"
+  ELIXIR_VERSION: "1.14"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.ERLANG_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - uses: mvkvc/actions_mix_deps@v1.0.2-alpha
+        with:
+          erlang-version: ${{ env.ERLANG_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - run: mix test
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.ERLANG_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - uses: mvkvc/actions_mix_deps@v1.0.2-alpha
+        with:
+          erlang-version: ${{ env.ERLANG_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - uses: mvkvc/actions_mix_dialyzer@v1.0.23-alpha
+        with:
+          erlang-version: ${{ env.ERLANG_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - run: mix credo --strict
+        if: success() || failure()
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.ERLANG_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - uses: mvkvc/actions_mix_deps@v1.0.2-alpha
+        with:
+          erlang-version: ${{ env.ERLANG_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+      - run: mix format --check-formatted
