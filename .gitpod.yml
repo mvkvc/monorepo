@@ -3,7 +3,6 @@ image:
 
 tasks:
   - init: |
-      git submodule update --init --recursive
       mise install
 
 vscode:
