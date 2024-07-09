@@ -2,11 +2,17 @@
 
 CLI to crawl central bank press releases.
 
-Currently supported countries:
+Supported countries:
 
 - [x] [Canada](https://www.bankofcanada.ca/press-releases/)
 - [ ] [United Kingdom](https://www.bankofengland.co.uk/news/press-releases)
 - [ ] [United States](https://www.federalreserve.gov/newsevents/pressreleases.htm)
+
+## Usage
+
+`./bank_crawl [CA UK US]`
+
+### Developing
 
 ## Requirements
 
@@ -19,14 +25,4 @@ Your OS should be detected automatically, but if not, you can set it manually in
 ```bash
 mix deps.get
 ./sh/build.sh
-```
-
-## Usage
-
-You can specify the country to crawl by space-separated country codes listed below, the default argument is `CA` if no argument is provided.
-
-Example:
-
-```bash
-./sh/start.sh CA UK US
 ```
