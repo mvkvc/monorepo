@@ -32,7 +32,6 @@ ENV PATH="$HOME/julia-1.8.2/bin:${PATH}"
 
 RUN curl -sSLf https://scala-cli.virtuslab.org/get | sh
 
-RUN python3 -m pip install --user pipx
-RUN python3 -m pipx ensurepath
-ENV PATH="$HOME/.local/bin:$PATH"
-RUN $HOME/.local/bin/pipx install poetry
+RUN sudo apt install pipx
+RUN pipx ensurepath
+RUN pipx install poetry
