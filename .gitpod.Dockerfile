@@ -25,7 +25,14 @@ RUN sudo apt-get -y install \
 RUN curl https://mise.run | sh
 RUN echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 
+RUN mkdir -p ~/install
+
+RUN curl -fsSL https://install.julialang.org | sh -s -- -y --default-channel 1.8.2 -p ~/install/julia-1.8.2
+ENV PATH="$HOME/julia-1.8.2/bin:${PATH}"
+
+RUN curl -sSLf https://scala-cli.virtuslab.org/get | sh
+
 RUN python3 -m pip install --user pipx
 RUN python3 -m pipx ensurepath
 ENV PATH="$HOME/.local/bin:$PATH"
-RUN pipx install poetry
+RUN $HOME/.local/bin/pipx install poetry

@@ -12,6 +12,9 @@ vscode:
     - erlang-ls.erlang-ls
     - elixir-lsp.elixir-ls
     - ms-python.python
+    - julialang.language-julia
+    - scala-lang.scala
+    - scalameta.metals
     - rust-lang.rust-analyzer
     - franneck94.c-cpp-runner
     - mads-hartmann.bash-ide-vscode
