@@ -1,8 +1,0 @@
-defaults:
-- _self_
-- datasets@dataset_book: book
-- datasets@dataset_trades: trades
-- envs: order_book
-- wrappers:
-  - discrete_action
-a: 1

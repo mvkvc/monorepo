@@ -1,8 +1,0 @@
-jupytext
-torchtyping
-hypothesis
-torch==1.10
-numpy
-pytest
-notebookjs
-jupyter

@@ -1,3 +1,3 @@
 # walter
 
-Discord personal handler.
+Personal assistant in Discord.

@@ -4,12 +4,7 @@
   <img src="assets/images/logo.png" alt="logo"/>
 </p>
 
-[![docs](https://github.com/mvkvc/pinkie/actions/workflows/docs.yaml/badge.svg?branch=main)](https://github.com/mvkvc/pinkie/actions/workflows/docs.yaml)
-[![ci](https://github.com/mvkvc/pinkie/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/mvkvc/pinkie/actions/workflows/ci.yaml)
-
 Self-hostable remote pinning service for IPFS.
-
-**Note**: This project is currently under heavy development and is not recommended for use.
 
 ## Links
 

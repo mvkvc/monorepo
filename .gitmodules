@@ -10,9 +10,6 @@
 [submodule "vendor/dockyard_academy"]
 	path = vendor/dockyard_academy
 	url = https://github.com/mvkvc/dockyard_academy.git
-[submodule "vendor/ARC-AGI"]
-	path = vendor/ARC-AGI
-	url = https://github.com/mvkvc/ARC-AGI.git
 [submodule "vendor/rustlings"]
 	path = vendor/rustlings
 	url = https://github.com/mvkvc/rustlings.git
@@ -34,3 +31,6 @@
 [submodule "vendor/codecrafters_http_rust"]
 	path = vendor/codecrafters_http_rust
 	url = https://git.codecrafters.io/0033fcfaf73df2ec
+[submodule "vendor/tenstorrent_puzzles"]
+	path = vendor/tenstorrent_puzzles
+	url = https://github.com/mvkvc/tenstorrent_puzzles.git

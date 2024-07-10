@@ -2,4 +2,6 @@
 
 Learning Rust, React, and Solana development together.
 
+## Apps
+
 - [balance_checker](./balance_checker/README.md): Web app to check for a Solana address the balance and if it is a program.

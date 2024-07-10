@@ -2,12 +2,6 @@
 
 Off-chain yield-generating payment accounts.
 
-## Links
-
-- https://explore.treefi.xyz
-- https://treefi.xyz
-- https://withdraw.treefi.xyz
-
 ## Components
 
 ```bash

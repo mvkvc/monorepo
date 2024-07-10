@@ -12,6 +12,7 @@ vscode:
     - ms-azuretools.vscode-docker
     - erlang-ls.erlang-ls
     - elixir-lsp.elixir-ls
+    - victorbjorklund.phoenix
     - ms-python.python
     - julialang.language-julia
     - scala-lang.scala

@@ -1,5 +1,7 @@
 # emigrate
 
+Migrate RAG vectors in PGVector to a new embedding space.
+
 ## Background
 
 You have an application which has a large amount of embedding vectors. There is a new model available or you want to fine-tune a custom model in order to get better performance. However it is expensive to re-embed all of your historical data.

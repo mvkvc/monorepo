@@ -1,1 +1,3 @@
-# lend_look
+# django_template
+
+Template for setting up Django with TailwindCSS.

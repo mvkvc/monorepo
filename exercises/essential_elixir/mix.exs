@@ -3,7 +3,7 @@ defmodule EE.MixProject do
 
   def project do
     [
-      app: :essential_elixir,
+      app: :ee,
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,

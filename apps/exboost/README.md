@@ -1,6 +1,6 @@
 # exboost
 
-Increase your personal RAM.
+LLM question-answering service with custom contexts.
 
 ## Components
 

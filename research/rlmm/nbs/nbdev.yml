@@ -1,9 +1,0 @@
-project:
-  output-dir: _docs
-
-website:
-  title: "rlmm"
-  site-url: "https://mvkvc.github.io/rlmm"
-  description: "RL for finance"
-  repo-branch: main
-  repo-url: "https://github.com/mvkvc/rlmm"

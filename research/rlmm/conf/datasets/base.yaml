@@ -1,6 +1,0 @@
-time_start: 21_03_05-08_30_00
-time_end: 21_03_05-10_30_00
-time_format: '%y_%m_%d-%H_%M_%S'
-resample_interval: minute
-resample_frequency: 1
-path: ???

@@ -1,2 +1,0 @@
-defmodule JobScraper do
-end

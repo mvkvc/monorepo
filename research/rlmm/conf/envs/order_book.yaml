@@ -1,8 +1,0 @@
-initial_cash: 1000000
-initial_inventory: 100
-min_value: 0
-order_max_age: 10
-episode_length: 100
-seed: 42
-render_mode: null
-_target_: rlmm.envs.OrderBookEnv

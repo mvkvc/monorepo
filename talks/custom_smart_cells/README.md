@@ -1,5 +1,9 @@
 # custom_smart_cells
 
-A talk given by [@einariii](https://github.com/einariii) and [@mvkvc](https://github.com/mvkvc) for the Toronto Elixir meetup, based on the principle of using Livebook smart cells as the initial building block of collaborative development practice. Over one month we spontaneously cultivated three new smart cells: [`kino_util`](https://github.com/mvkvc/kino_util), a system performance graph; [`kino_sound`](https://github.com/einariii/kino_sound), a tool to sonify your livebooks; and [`kino_fly`](https://github.com/mvkvc/kino_fly), a managing hub for fly machines.
+Materials for a talk given by [@mvkvc](https://github.com/mvkvc) and [@einariii](https://github.com/einariii) for the Toronto Elixir meetup. We explore creating your own custom Elixir Livebook smart cells.
 
- The presentation file can be found here. AV recording coming soon.
+For this talk we created three new smart cells:
+
+- [`kino_util`](../../libs/ex/kino_util/README.md)
+- [`kino_fly`](../../libs/ex/kino_fly/README.md)
+- [`kino_sound`](https://github.com/einariii/kino_sound)
