@@ -22,10 +22,34 @@ RUN sudo apt-get -y install \
 RUN sudo apt-get -y install \
     unzip
 
+RUN mkdir -p ~/install
+
 RUN curl https://mise.run | sh
 RUN echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 
-RUN mkdir -p ~/install
+# Install Erlang
+RUN mkdir -p /erlang && \
+  cd /erlang && \
+  wget -nv -O erlang.tar.gz https://builds.hex.pm/builds/otp/ubuntu-22.04/OTP-27.0.tar.gz && \
+  tar xzf erlang.tar.gz --strip-components=1 && \
+  ./Install -minimal "$(pwd)"
+
+# Erlang runtime dependencies, see https://github.com/hexpm/bob/blob/4fe43eb9853bb95dbfe276957bd7d3f931a451b3/priv/scripts/docker/erlang-ubuntu-jammy.dockerfile
+RUN apt-get update && \
+  apt-get -y --no-install-recommends install \
+    ca-certificates \
+    libodbc1 \
+    libssl3 \
+    libsctp1
+
+# Install Elixir
+RUN mkdir -p /elixir && \
+  cd /elixir && \
+  wget -nv -O elixir.zip https://builds.hex.pm/builds/elixir/v1.17.2-otp-27.zip && \
+  unzip -q elixir.zip
+
+ENV PATH="/erlang/bin:/elixir/bin:${PATH}"
+ENV LANG=C.UTF-8
 
 RUN curl -fsSL https://install.julialang.org | sh -s -- -y --default-channel 1.8.2 -p ~/install/julia-1.8.2
 ENV PATH="$HOME/julia-1.8.2/bin:${PATH}"

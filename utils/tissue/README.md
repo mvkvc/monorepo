@@ -1,3 +1,3 @@
 # tissue
 
-Offline-first issue tracker.
+Local-first technical issue tracker.
