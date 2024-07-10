@@ -2,6 +2,7 @@
 name: bank_crawl
 desc: CLI to extract text from central bank press releases.
 tech: Elixir, Crawly, Burrito
+show: false
 ---
 
 # bank_crawl
