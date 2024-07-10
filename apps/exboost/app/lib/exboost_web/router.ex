@@ -78,8 +78,8 @@ defmodule ExboostWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [{ExboostWeb.UserAuth, :ensure_authenticated}] do
       live("/chat", ChatLive, :new)
-      live("/chat/:id", ChatLive, :show)
-      live("/resources", ResourcesLive, :index)
+      # live("/chat/:id", ChatLive, :show)
+      # live("/resources", ResourcesLive, :index)
       live("/users/settings", UserSettingsLive, :edit)
       live("/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email)
     end

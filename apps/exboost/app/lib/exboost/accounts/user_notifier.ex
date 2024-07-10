@@ -8,7 +8,7 @@ defmodule Exboost.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Exboost", "contact@example.com"})
+      |> from({"Exboost", "system@exboost.xyz"})
       |> subject(subject)
       |> text_body(body)
 

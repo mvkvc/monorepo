@@ -7,4 +7,6 @@ alias Exboost.Chats.Chat
 alias Exboost.Chats.Message
 alias Exboost.S3
 alias Exboost.Search
-alias Exboost.Search.Result
+alias Exboost.Search.Exa
+alias Exboost.Search.Serper
+alias Exboost.LLM

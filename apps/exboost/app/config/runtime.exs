@@ -22,7 +22,8 @@ end
 
 config :exboost,
   s3_bucket: System.get_env("S3_BUCKET"),
-  s3_presigned_url_duration: String.to_integer(System.get_env("S3_PRESIGNED_URL_DURATION")),
+  s3_presigned_url_duration:
+    String.to_integer(System.get_env("S3_PRESIGNED_URL_DURATION") || "3600"),
   exa_api_key: System.get_env("EXA_API_KEY")
 
 config :ex_aws,
@@ -31,19 +32,43 @@ config :ex_aws,
 
 if config_env() == :prod do
   database_url =
-    System.get_env("DATABASE_URL") ||
+    System.get_env("DB_URL") ||
       raise """
-      environment variable DATABASE_URL is missing.
+      environment variable DB_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
       """
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
+  # config :exboost, Exboost.Repo,
+  #   # ssl: true,
+  #   url: database_url,
+  #   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+  #   socket_options: maybe_ipv6
+
+  cert_path = Path.join(:code.priv_dir(:exboost), "cert/cacert.pem")
+
   config :exboost, Exboost.Repo,
-    # ssl: true,
+    ssl: [cacertfile: cert_path],
     url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-    socket_options: maybe_ipv6
+    socket_options: maybe_ipv6,
+    ssl_opts: [
+      # Need to get domain and SSL
+      cacertfile: cert_path,
+      verify: :verify_peer,
+      server_name_indication:
+        System.fetch_env!("DB_URL")
+        |> String.split("@")
+        |> Enum.at(1)
+        |> String.split("/")
+        |> Enum.at(0)
+        |> to_charlist(),
+      customize_hostname_check: [
+        # By default, Erlang does not support wildcard certificates. This function supports validating wildcard hosts
+        match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+      ]
+    ]
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
@@ -57,7 +82,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("PHX_HOST") || "app.exboost.xyz"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :exboost, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
@@ -112,10 +137,10 @@ if config_env() == :prod do
   # Also, you may need to configure the Swoosh API client of your choice if you
   # are not using SMTP. Here is an example of the configuration:
   #
-  #     config :exboost, Exboost.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
+  config :exboost, Exboost.Mailer,
+    adapter: Swoosh.Adapters.Postmark,
+    api_key: System.get_env("POSTMARK_API_KEY")
+
   #
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:

@@ -1,5 +1,6 @@
 defmodule ExboostWeb.ResourcesLive do
   use ExboostWeb, :live_view
+  alias Exboost.Accounts
 
   def render(assigns) do
     ~H"""

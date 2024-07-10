@@ -1,13 +1,11 @@
 defmodule Exboost.Search.Exa do
-  alias Exboost.Search.Result
-
   @behaviour Exboost.Search
 
   def search(query, opts \\ []) do
     headers = [
       {"accept", "application/json"},
       {"content-type", "application/json"},
-      {"x-api-key", Application.fetch_env!(:exboost, :exa_api_key)}
+      {"x-api-key", opts[:api_key]}
     ]
 
     body = %{
@@ -25,13 +23,17 @@ defmodule Exboost.Search.Exa do
            body: Jason.encode!(body)
          ) do
       {:ok, %Req.Response{status: 200, body: %{"results" => results}}} ->
-        Enum.reduce(results, [], fn
-          %{"url" => url, "text" => text}, acc ->
-            [%Result{url: url, content: text} | acc]
+        output =
+          Enum.reduce(results, [], fn
+            %{"title" => title, "url" => url, "text" => text}, acc ->
+              content = String.slice(text, 0, opts[:content_max_length])
+              [%{"url" => url, "title" => title, "content" => content} | acc]
 
-          result, acc ->
-            acc
-        end)
+            _result, acc ->
+              acc
+          end)
+
+        {:ok, output}
 
       {:ok, %Req.Response{status: status}} ->
         {:error, status}

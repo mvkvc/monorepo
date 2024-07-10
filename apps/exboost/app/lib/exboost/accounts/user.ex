@@ -3,10 +3,15 @@ defmodule Exboost.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
-    field :confirmed_at, :naive_datetime
+    field(:email, :string)
+    field(:password, :string, virtual: true, redact: true)
+    field(:hashed_password, :string, redact: true)
+    field(:confirmed_at, :naive_datetime)
+    field(:llm_model, :string)
+    field(:llm_base_url, :string)
+    field(:llm_api_key, :string, redact: true)
+    field(:search_engine, :string)
+    field(:search_api_key, :string, redact: true)
 
     timestamps(type: :utc_datetime)
   end
@@ -36,7 +41,10 @@ defmodule Exboost.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [
+      :email,
+      :password
+    ])
     |> validate_email(opts)
     |> validate_password(opts)
   end
@@ -154,5 +162,17 @@ defmodule Exboost.Accounts.User do
     else
       add_error(changeset, :current_password, "is not valid")
     end
+  end
+
+  def llm_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:llm_model, :llm_base_url, :llm_api_key, :search_engine, :search_api_key])
+    |> validate_required([
+      :llm_model,
+      :llm_base_url,
+      :llm_api_key,
+      :search_engine
+    ])
+    |> validate_inclusion(:search_engine, ["exa", "serper"])
   end
 end

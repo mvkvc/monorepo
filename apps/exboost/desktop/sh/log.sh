@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 
 FILE="$HOME"/.config/exboost/desktop.log
 
@@ -7,7 +7,7 @@ if [ "$1" != "-f" ] && [ -n "$1" ]; then
     exit 1
 fi
 
-if [ "$1" == "-f" ]; then
+if [ "$1" = "-f" ]; then
     true >"$FILE"
 fi
 
