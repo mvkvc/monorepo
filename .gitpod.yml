@@ -23,3 +23,9 @@ vscode:
     - mkhl.direnv
     - tamasfe.even-better-toml
     - redhat.vscode-yaml
+
+gitConfig:
+    pull.rebase: "false"
+    init.defaultBranch: main
+    push.autoSetupRemote: "true"
+    
