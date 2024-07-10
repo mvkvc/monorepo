@@ -20,9 +20,12 @@ vscode:
     - rust-lang.rust-analyzer
     - franneck94.c-cpp-runner
     - mads-hartmann.bash-ide-vscode
-    - mkhl.direnv
-    - tamasfe.even-better-toml
+    - foxundermoon.shell-format
     - redhat.vscode-yaml
+    - tamasfe.even-better-toml
+    - mkhl.direnv
+    - codeium.codeium
+    - continue.continue
 
 gitConfig:
     pull.rebase: "false"

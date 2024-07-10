@@ -1,86 +1,189 @@
 use std::env::current_dir;
+use std::fs;
 
 use clap::Parser;
 use glob::glob;
+use regex::Regex;
 use relative_path::RelativePath;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use serde_yml;
-
-const LEVELS: u8 = 2;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[arg(short, long, default_value = "./README.md")]
-    output: String,
+    #[arg(short, long, default_value = "../../README.md")]
+    target: String,
+
+    #[arg(short, long, default_value = "../..")]
+    root: String,
+
+    #[arg(short, long, default_value = "2")]
+    levels: u8,
 
     #[arg(short, long, default_value = "")]
-    root: String
+    exclude: String,
+
+    #[arg(short, long)]
+    dry_run: bool,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
-struct User {
+struct ProjectFrontmatter {
     name: String,
-    description: String,
-    #[serde(default)]
-    is_active: bool,
+    desc: String,
+    tech: Option<String>,
+    prev: Option<String>,
+    #[serde(default = "default_show")]
+    show: bool,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
+struct Project {
+    name: String,
+    path: String,
+    desc: String,
+    tech: Option<String>,
+    prev: Option<String>,
+}
+
+fn default_show() -> bool {
+    true
+}
+
+fn frontmatter_to_project(frontmatter: ProjectFrontmatter, path: &str) -> Project {
+    Project {
+        name: frontmatter.name,
+        path: path.to_string(),
+        desc: frontmatter.desc,
+        tech: frontmatter.tech,
+        prev: frontmatter.prev,
+    }
+}
+
+fn extract_frontmatter(content: &str) -> Option<String> {
+    let re = Regex::new(r"(?s)^---\s*\n(.*?)\n---\s*\n").unwrap();
+
+    re.captures(content).map(|cap| cap[1].trim().to_string())
+}
+
+fn extract_frontmatter_struct(path: &str) -> Option<ProjectFrontmatter> {
+    let content = fs::read_to_string(path).ok()?;
+    let frontmatter = extract_frontmatter(&content)?;
+    let project_frontmatter: ProjectFrontmatter = serde_yml::from_str(&frontmatter).ok()?;
+
+    if project_frontmatter.show {
+        Some(project_frontmatter)
+    } else {
+        None
+    }
+}
+
+fn template_project(project: Project) -> String {
+    let mut result = String::new();
+    result.push_str(&format!(
+        "- [{}]({}): {}",
+        project.name, project.path, project.desc
+    ));
+
+    if project.tech.is_some() || project.prev.is_some() {
+        result.push_str("\n");
+
+        if let Some(tech) = &project.tech {
+            result.push_str(&format!("    - Tech: {}", tech));
+            if project.prev.is_some() {
+                result.push('\n');
+            }
+        }
+
+        if let Some(prev) = &project.prev {
+            result.push_str(&format!("    - Preview: {}", prev));
+        }
+    }
+
+    result
 }
 
 fn main() {
     let args = Args::parse();
 
+    println!("Running MAKEME with: {:?}", args);
+
     let root = RelativePath::new(&args.root);
     let current_dir = current_dir().expect("Failed to get current directory");
-    let root_full = root.to_path(current_dir);
-
+    let root_full = root.to_path(&current_dir);
     let mut glob_pattern = String::from(root_full.to_str().unwrap());
 
-    for _ in 0..LEVELS {
+    for _ in 0..args.levels {
         glob_pattern.push_str("/*");
     }
 
     glob_pattern.push_str("/README.md");
 
+    let exclude: Vec<&str> = if args.exclude.is_empty() {
+        Vec::new()
+    } else {
+        args.exclude.split(',').collect()
+    };
+
+    let mut projects = Vec::new();
+
     match glob(&glob_pattern) {
         Ok(paths) => {
             for entry in paths {
                 match entry {
-                    Ok(path) => println!("Found: {:?}", path.display()),
+                    Ok(path) => {
+                        let path_str = path.to_string_lossy();
+                        if !exclude.iter().any(|&x| path_str.contains(x)) {
+                            let canonical_path = fs::canonicalize(&path).unwrap();
+                            if let Some(project_frontmatter) =
+                                extract_frontmatter_struct(canonical_path.to_str().unwrap())
+                            {
+                                let relative_path = path.strip_prefix(&root_full).unwrap();
+                                let relative_path_str =
+                                    format!("./{}", relative_path.to_str().unwrap())
+                                        .replace("\\", "/");
+                                let project =
+                                    frontmatter_to_project(project_frontmatter, &relative_path_str);
+                                projects.push(project);
+                            }
+                        }
+                    }
                     Err(e) => println!("Error reading glob entry: {:?}", e),
                 }
             }
         }
         Err(e) => println!("Error with glob pattern: {:?}", e),
     }
+
+    if projects.is_empty() {
+        println!("No projects found. No changes will be made to the target file.");
+        return;
+    }
+
+    projects.sort_by(|a, b| a.name.cmp(&b.name));
+    let output_projects = projects
+        .into_iter()
+        .map(template_project)
+        .collect::<Vec<String>>()
+        .join("\n");
+    let output = format!("## Projects\n\n{}", output_projects);
+
+    let marker_start = "<!-- MAKEME START -->\n";
+    let marker_end = "\n<!-- MAKEME END -->";
+    let target_path = RelativePath::new(&args.target).to_path(&current_dir);
+    let content = fs::read_to_string(&target_path).unwrap();
+
+    if let (Some(start), Some(end)) = (content.find(marker_start), content.find(marker_end)) {
+        let before = &content[..start + marker_start.len()];
+        let after = &content[end..];
+        let new_content = before.to_string() + &output + after;
+
+        if args.dry_run {
+            println!("{}", output);
+        } else {
+            fs::write(&target_path, new_content).unwrap();
+        };
+    } else {
+        println!("Could not find both start and end markers in the target file.");
+    };
 }
-
-// Tesed example from serde_yml
-// use serde::{Serialize, Deserialize};
-// use serde_yml;
-
-// #[derive(Serialize, Deserialize, PartialEq, Debug)]
-// struct User {
-//     name: String,
-//     age: Option<u32>,
-//     #[serde(default)]
-//     is_active: bool,
-// }
-
-// fn main() -> Result<(), serde_yml::Error> {
-//     let user = User {
-//         name: "John".to_string(),
-//         age: None,
-//         is_active: true,
-//     };
-
-//     // Serialize to YAML
-//     // let yaml = serde_yml::to_string(&user)?;
-//     let yaml = "name: John\nage: null\nis_active: true";
-//     println!("Serialized YAML:\n{}", yaml);
-
-//     // Deserialize from YAML
-//     let deserialized_user: User = serde_yml::from_str(&yaml)?;
-//     assert_eq!(user, deserialized_user);
-
-//     Ok(())
-// }

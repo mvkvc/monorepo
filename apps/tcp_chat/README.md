@@ -1,3 +1,9 @@
+---
+name: tcp_chat
+desc: TCP chat server with rooms and server commands.
+tech: Elixir, gen_tcp
+---
+
 # tcp_chat
 
 TCP chat server with rooms and server commands.

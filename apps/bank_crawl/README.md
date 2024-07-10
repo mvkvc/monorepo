@@ -1,3 +1,9 @@
+---
+name: bank_crawl
+desc: CLI to extract text from central bank press releases.
+tech: Elixir, Crawly, Burrito
+---
+
 # bank_crawl
 
 CLI to crawl central bank press releases.

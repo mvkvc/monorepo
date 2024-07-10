@@ -1,3 +1,9 @@
+---
+name: axon_examples
+desc: Examples illustrating how to use the Axon neural network library.
+tech: Elixir, Nx, Axon
+---
+
 # axon_examples
 
 Examples illustrating how to use the Axon neural network library in Elixir.

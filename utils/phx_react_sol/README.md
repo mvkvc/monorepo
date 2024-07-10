@@ -1,6 +1,12 @@
+---
+name: phx_react_sol
+desc: Demo integrating React and Solana Wallet Adapter component with Phoenix LiveView.
+tech: Elixir, Phoenix, LiveView, JavaScript, React
+---
+
 # phx_react_sol
 
-Template for integrating Solana Wallet Adapter component in React with Phoenix.
+Demo integrating React and Solana Wallet Adapter component with Phoenix LiveView.
 
 ## Requirements
 
