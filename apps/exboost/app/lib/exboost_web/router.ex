@@ -21,22 +21,12 @@ defmodule ExboostWeb.Router do
   scope "/", ExboostWeb do
     pipe_through(:browser)
 
-    get("/", PageController, :home)
+    # get("/", PageController, :home)
+    live("/", LandingLive, :new)
   end
 
   scope "/api", ExboostWeb do
     pipe_through(:api)
-
-    # scope "/file" do
-    #   post("/presigned", FileController, :presigned)
-    #   post("/create", FileController, :create)
-    #   post("/delete", FileController, :delete)
-    # end
-
-    # scope "/folder" do
-    #   post("/create", FolderController, :create)
-    #   post("/delete", FolderController, :delete)
-    # end
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
@@ -78,9 +68,6 @@ defmodule ExboostWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [{ExboostWeb.UserAuth, :ensure_authenticated}] do
       live("/chat", ChatLive, :new)
-      live("/chat_stream", ChatStreamLive, :new)
-      # live("/chat/:id", ChatLive, :show)
-      # live("/resources", ResourcesLive, :index)
       live("/users/settings", UserSettingsLive, :edit)
       live("/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email)
     end

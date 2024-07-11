@@ -31,19 +31,4 @@ defmodule Exboost.ChatsFixtures do
 
     message
   end
-
-  @doc """
-  Generate a result.
-  """
-  def result_fixture(attrs \\ %{}) do
-    {:ok, result} =
-      attrs
-      |> Enum.into(%{
-        engine: "some engine",
-        results: %{}
-      })
-      |> Exboost.Chats.create_result()
-
-    result
-  end
 end

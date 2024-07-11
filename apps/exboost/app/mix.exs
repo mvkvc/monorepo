@@ -41,6 +41,7 @@ defmodule Exboost.MixProject do
 
   defp deps do
     [
+      {:bloom, "~> 0.0.8"},
       {:cachex, "~> 3.6"},
       {:sentry, "~> 10.6.2"},
       {:req, github: "wojtekmach/req", override: true},
