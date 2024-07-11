@@ -1,6 +1,10 @@
-# exboost
+---
+name: exboost
+desc: LLM question-answering service with customizable contexts.
+tech: Elixir, Phoenix, LiveView, TypeScript, NodeJS, Electron
+---
 
-_Increase your personal RAM._
+# exboost
 
 Exboost is a customizable question answering engine. Currently it allows you to use any custom LLM by adding OpenAI-compatible API credentials as well as a search provider for additional context. Longer-term goals in development include a desktop client to connect your local documents, an interface to select online sources to scrape for context, and an interface to select which groups of context to use per conversation.
 

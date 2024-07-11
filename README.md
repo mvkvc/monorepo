@@ -10,8 +10,8 @@ To initialize the external repositories in `vendor/` run: `git submodule update 
 
 - [axon_examples](./exercises/axon_examples/README.md): Examples illustrating how to use the Axon neural network library.
     - Tech: Elixir, Nx, Axon
-- [exboost](./apps/exboost/README.md): LLM question-answering service with custom contexts.
-    - Tech: Elixir, Phoenix, LiveView, TypeScript, React, Electron
+- [exboost](./apps/exboost/README.md): LLM question-answering service with customizable contexts.
+    - Tech: Elixir, Phoenix, LiveView, TypeScript, NodeJS, Electron
 - [kino_fly](./libs/kino_fly/README.md): Livebook smart cell to interact with the Fly.io machines API.
     - Tech: Elixir, Kino, JavaScript, Vue
 - [kino_fly](./libs/kino_util/README.md): Livebook smart cell to show full system utilization.
