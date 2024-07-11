@@ -5,6 +5,6 @@ defmodule Exboost.S3 do
 
     :s3
     |> ExAws.Config.new([])
-    |> ExAws.S3.presigned_url(:put, bucket, key, duration: duration)
+    |> ExAws.S3.presigned_url(:get, bucket, key, duration: duration)
   end
 end

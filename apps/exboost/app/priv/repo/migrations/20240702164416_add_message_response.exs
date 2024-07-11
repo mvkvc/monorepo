@@ -3,9 +3,12 @@ defmodule Exboost.Repo.Migrations.AddMessageResponse do
 
   def change do
     alter table(:messages) do
-      add :response, :string
+      add :response, :text
+      add :llm_model, :string
+      add :llm_prompt, :text
       add :search_engine, :string
-      add :search_results, {:array, :map}, default: []
+      add :search_query, :string
+      add :search_results, {:array, :map}
     end
   end
 end

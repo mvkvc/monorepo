@@ -1,7 +1,13 @@
 defmodule ExboostWeb.UserSettingsLive do
   use ExboostWeb, :live_view
-
   alias Exboost.Accounts
+
+  # Removed for initial deploy
+  # <div class="space-y-2">
+  #   <h3>API Key</h3>
+  #   <p><%= @api_key || "Shows when generated" %></p>
+  #   <button phx-click="generate_api_key" class="btn">Generate</button>
+  # </div>
 
   def render(assigns) do
     ~H"""
@@ -11,10 +17,27 @@ defmodule ExboostWeb.UserSettingsLive do
     </.header>
 
     <div class="space-y-12 divide-y">
-      <div class="space-y-2">
-        <h3>API Key</h3>
-        <p><%= @api_key || "Shows when generated" %></p>
-        <button phx-click="generate_api_key" class="btn">Generate</button>
+      <div>
+        <.simple_form
+          for={@llm_form}
+          id="lm_form"
+          phx-submit="update_llm"
+          phx-trigger-action={@trigger_submit}
+        >
+          <.input field={@llm_form[:llm_model]} type="text" label="OpenAI-compatible API model" />
+          <.input field={@llm_form[:llm_base_url]} type="text" label="OpenAI-compatible API base URL" />
+          <.input field={@llm_form[:llm_api_key]} type="password" label="OpenAI-compatible API key" />
+          <.input
+            field={@llm_form[:search_engine]}
+            type="select"
+            label="Search API"
+            options={["exa", "serper"]}
+          />
+          <.input field={@llm_form[:search_api_key]} type="password" label="Search API key" />
+          <:actions>
+            <.button phx-disable-with="Updating...">Update</.button>
+          </:actions>
+        </.simple_form>
       </div>
       <div>
         <.simple_form
@@ -95,6 +118,7 @@ defmodule ExboostWeb.UserSettingsLive do
     user = socket.assigns.current_user
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
+    llm_changeset = Accounts.change_user_llm(user)
     api_key = nil
 
     socket =
@@ -104,6 +128,7 @@ defmodule ExboostWeb.UserSettingsLive do
       |> assign(:current_email, user.email)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
+      |> assign(:llm_form, to_form(llm_changeset))
       |> assign(:trigger_submit, false)
       |> assign(:api_key, api_key)
 
@@ -176,5 +201,28 @@ defmodule ExboostWeb.UserSettingsLive do
     user = socket.assigns.current_user
     api_key = Accounts.create_user_api_token(user)
     {:noreply, assign(socket, api_key: api_key)}
+  end
+
+  def handle_event("update_llm", %{"user" => params}, socket) do
+    user = socket.assigns.current_user
+
+    case Accounts.update_user_llm(user, params) do
+      {:ok, user} ->
+        llm_changeset = Accounts.change_user_llm(user)
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "LLM settings updated")
+         |> assign(current_user: user)
+         |> assign(llm_form: to_form(llm_changeset))}
+
+      {:error, _changeset} ->
+        llm_changeset = Accounts.change_user_llm(user)
+
+        {:noreply,
+         socket
+         |> put_flash(:error, "Failed to update LLM settings")
+         |> assign(llm_form: to_form(llm_changeset))}
+    end
   end
 end

@@ -17,7 +17,8 @@ defmodule Exboost.Application do
       # Start a worker by calling: Exboost.Worker.start_link(arg)
       # {Exboost.Worker, arg},
       # Start to serve requests, typically the last entry
-      ExboostWeb.Endpoint
+      ExboostWeb.Endpoint,
+      {Task.Supervisor, name: Exboost.TaskSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

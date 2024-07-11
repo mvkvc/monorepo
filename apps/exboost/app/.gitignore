@@ -1,5 +1,6 @@
 .db/
 .elixir_ls/
+priv/plts/
 
 # The directory Mix will write compiled artifacts to.
 /_build/

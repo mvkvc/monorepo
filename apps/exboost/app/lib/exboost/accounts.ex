@@ -376,4 +376,14 @@ defmodule Exboost.Accounts do
       _ -> :error
     end
   end
+
+  def change_user_llm(user, attrs \\ %{}) do
+    User.llm_changeset(user, attrs)
+  end
+
+  def update_user_llm(user, attrs) do
+    user
+    |> User.llm_changeset(attrs)
+    |> Repo.update()
+  end
 end

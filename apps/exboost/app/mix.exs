@@ -41,14 +41,13 @@ defmodule Exboost.MixProject do
 
   defp deps do
     [
-      {:bloom, "~> 0.0.8"},
-      {:req, "~> 0.5.0"},
+      {:sentry, "~> 10.6.2"},
+      {:req, github: "wojtekmach/req", override: true},
       {:pgvector, "~> 0.3.0"},
       {:ex_aws, "~> 2.0"},
       {:ex_aws_s3, "~> 2.0"},
-      # {:poison, "~> 3.0"},
-      # {:hackney, "~> 1.9"},
-      # optional dependency
+      {:poison, "~> 3.0"},
+      {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6.6"},
       #
       {:bcrypt_elixir, "~> 3.0"},

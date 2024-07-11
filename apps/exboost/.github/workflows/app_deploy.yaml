@@ -2,12 +2,12 @@ name: app_deploy
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - ".github/workflows/app_deploy.yaml"
-  #     - "app/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/app_deploy.yaml"
+      - "app/**"
 
 jobs:
   deploy:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy -a replicant-platform --remote-only
+      - run: flyctl deploy -a exboost-app --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.TOKEN_FLY }}
         working-directory: app

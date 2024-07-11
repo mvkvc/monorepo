@@ -7,6 +7,7 @@ defmodule Exboost.Chats.Chat do
   schema "chats" do
     field :hidden, :boolean, default: false
     field :summary, :string
+    field :summarized, :boolean, default: false
 
     belongs_to :user, User
     has_many :messages, Message
@@ -17,7 +18,7 @@ defmodule Exboost.Chats.Chat do
   @doc false
   def changeset(chat, attrs) do
     chat
-    |> cast(attrs, [:user_id, :hidden, :summary])
+    |> cast(attrs, [:user_id, :hidden, :summary, :summarized])
     |> validate_required([:hidden, :summary])
   end
 end

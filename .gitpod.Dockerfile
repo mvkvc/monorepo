@@ -20,7 +20,8 @@ RUN sudo apt-get -y install \
   openjdk-17-jdk
 # Elixir
 RUN sudo apt-get -y install \
-  unzip
+  unzip \
+  inotify-tools
 
 RUN mkdir -p ~/install
 
