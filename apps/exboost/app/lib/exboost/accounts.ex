@@ -386,4 +386,16 @@ defmodule Exboost.Accounts do
     |> User.llm_changeset(attrs)
     |> Repo.update()
   end
+
+  def reset_user_llm(user) do
+    reset_attrs = %{
+      llm_model: nil,
+      llm_base_url: nil,
+      llm_api_key: nil,
+      search_engine: "exa",
+      search_api_key: nil
+    }
+
+    update_user_llm(user, reset_attrs)
+  end
 end

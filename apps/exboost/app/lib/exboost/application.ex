@@ -18,7 +18,8 @@ defmodule Exboost.Application do
       # {Exboost.Worker, arg},
       # Start to serve requests, typically the last entry
       ExboostWeb.Endpoint,
-      {Task.Supervisor, name: Exboost.TaskSupervisor}
+      {Task.Supervisor, name: Exboost.TaskSupervisor},
+      {Cachex, name: :rate_limiter}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

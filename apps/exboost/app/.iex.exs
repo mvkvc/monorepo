@@ -10,3 +10,4 @@ alias Exboost.Search
 alias Exboost.Search.Exa
 alias Exboost.Search.Serper
 alias Exboost.LLM
+alias Exboost.RateLimiter

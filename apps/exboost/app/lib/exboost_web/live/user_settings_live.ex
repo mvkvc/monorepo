@@ -2,13 +2,6 @@ defmodule ExboostWeb.UserSettingsLive do
   use ExboostWeb, :live_view
   alias Exboost.Accounts
 
-  # Removed for initial deploy
-  # <div class="space-y-2">
-  #   <h3>API Key</h3>
-  #   <p><%= @api_key || "Shows when generated" %></p>
-  #   <button phx-click="generate_api_key" class="btn">Generate</button>
-  # </div>
-
   def render(assigns) do
     ~H"""
     <.header class="text-center">
@@ -35,7 +28,10 @@ defmodule ExboostWeb.UserSettingsLive do
           />
           <.input field={@llm_form[:search_api_key]} type="password" label="Search API key" />
           <:actions>
-            <.button phx-disable-with="Updating...">Update</.button>
+            <.button type="submit" phx-disable-with="Updating...">Update</.button>
+            <.button type="button" phx-click="reset_llm" phx-disable-with="Resetting...">
+              Reset
+            </.button>
           </:actions>
         </.simple_form>
       </div>
@@ -224,5 +220,18 @@ defmodule ExboostWeb.UserSettingsLive do
          |> put_flash(:error, "Failed to update LLM settings")
          |> assign(llm_form: to_form(llm_changeset))}
     end
+  end
+
+  def handle_event("reset_llm", _params, socket) do
+    llm_changeset =
+      case Accounts.reset_user_llm(socket.assigns.current_user) do
+        {:ok, user} ->
+          Accounts.change_user_llm(user)
+
+        _ ->
+          %{}
+      end
+
+    {:noreply, assign(socket, :llm_form, to_form(llm_changeset))}
   end
 end

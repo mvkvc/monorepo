@@ -24,7 +24,11 @@ config :exboost,
   s3_bucket: System.get_env("S3_BUCKET"),
   s3_presigned_url_duration:
     String.to_integer(System.get_env("S3_PRESIGNED_URL_DURATION") || "3600"),
-  exa_api_key: System.get_env("EXA_API_KEY")
+  openai_model: System.get_env("OPENAI_MODEL"),
+  openai_base_url: System.get_env("OPENAI_BASE_URL"),
+  openai_api_key: System.get_env("OPENAI_API_KEY"),
+  search_engine: System.get_env("SEARCH_ENGINE", "exa"),
+  search_api_key: System.get_env("SEARCH_API_KEY")
 
 config :ex_aws,
   access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],

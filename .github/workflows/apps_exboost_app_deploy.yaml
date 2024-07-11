@@ -1,4 +1,4 @@
-name: app_deploy
+name: apps_exboost_app_deploy
 
 on:
   workflow_dispatch:
@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows/app_deploy.yaml"
-      - "app/**"
+      - .github/workflows/app_deploy.yaml
+      - apps/exboost/app/**
 
 jobs:
   deploy:
@@ -20,4 +20,4 @@ jobs:
       - run: flyctl deploy -a exboost-app --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.TOKEN_FLY }}
-        working-directory: app
+        working-directory: apps/exboost/app

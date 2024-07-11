@@ -10,7 +10,7 @@ defmodule Exboost.Accounts.User do
     field(:llm_model, :string)
     field(:llm_base_url, :string)
     field(:llm_api_key, :string, redact: true)
-    field(:search_engine, :string)
+    field(:search_engine, :string, default: "exa")
     field(:search_api_key, :string, redact: true)
 
     timestamps(type: :utc_datetime)
@@ -168,10 +168,20 @@ defmodule Exboost.Accounts.User do
     user
     |> cast(attrs, [:llm_model, :llm_base_url, :llm_api_key, :search_engine, :search_api_key])
     |> validate_required([
+      :search_engine
+    ])
+    |> validate_inclusion(:search_engine, ["exa", "serper"])
+  end
+
+  def llm_changeset_unlimited(user, attrs) do
+    user
+    |> cast(attrs, [:llm_model, :llm_base_url, :llm_api_key, :search_engine, :search_api_key])
+    |> validate_required([
       :llm_model,
       :llm_base_url,
       :llm_api_key,
-      :search_engine
+      :search_engine,
+      :search_api_key
     ])
     |> validate_inclusion(:search_engine, ["exa", "serper"])
   end

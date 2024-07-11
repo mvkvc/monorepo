@@ -8,10 +8,11 @@ defmodule ExboostWeb.ChatLive do
   alias Exboost.Chats.Message
   alias Exboost.LLM
   alias Exboost.Search
+  alias Exboost.RateLimiter
 
   @sources_n 5
   @sources_length 300
-  @summary_length 20
+  @summary_length 30
 
   def render(assigns) do
     ~H"""
@@ -90,6 +91,13 @@ defmodule ExboostWeb.ChatLive do
         </div>
 
         <div class="p-4 bg-base-200">
+          <div class="text-xs">
+            <%= if @rate_limit do %>
+              <span>
+                Messages left: <%= @rate_limit_amount %>. Resets in <%= round(@rate_limit_reset) %> minutes. Add your own API keys on the Settings page to remove the rate limit.
+              </span>
+            <% end %>
+          </div>
           <.form
             id="user-input-form"
             for={@form}
@@ -104,10 +112,19 @@ defmodule ExboostWeb.ChatLive do
                 type="textarea"
                 field={@form[:content]}
                 class="w-full textarea textarea-bordered min-h-[60px] pr-[4.5rem]"
-                placeholder="Type your message here..."
+                placeholder={
+                  if @rate_limit && @rate_limit_amount <= 0,
+                    do: "Rate limit exceeded...",
+                    else: "Type your message here"
+                }
                 rows="1"
+                disabled={@rate_limit && @rate_limit_amount <= 0}
               />
-              <button type="submit" class="btn btn-primary absolute bottom-2 right-2">
+              <button
+                type="submit"
+                class="btn btn-primary absolute bottom-2 right-2"
+                disabled={@rate_limit && @rate_limit_amount <= 0}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -149,7 +166,7 @@ defmodule ExboostWeb.ChatLive do
   end
 
   defp truncate_summary(summary, max_length) do
-    if String.length(summary) > max_length do
+    if !is_nil(max_length) and String.length(summary) > max_length do
       String.slice(summary, 0, max_length) <> "..."
     else
       summary
@@ -164,6 +181,8 @@ defmodule ExboostWeb.ChatLive do
       socket.assigns.current_user.id
       |> Chats.list_chats_by_user_visible()
       |> Enum.reverse()
+
+    Process.send_after(self(), :reset, 60_000)
 
     {:ok,
      socket
@@ -218,6 +237,14 @@ defmodule ExboostWeb.ChatLive do
     message_attrs = %{user_id: socket.assigns.current_user.id, chat_id: chat.id, content: content}
     {:ok, message} = Chats.create_message(message_attrs)
     send(self(), {:generate, chat.id, message.id, content, socket.assigns.messages})
+
+    socket =
+      if socket.assigns.rate_limit do
+        RateLimiter.decr(socket.assigns.current_user.id)
+
+        socket
+        |> assign(rate_limit_amount: max(socket.assigns.rate_limit_amount - 1, 0))
+      end
 
     {:noreply,
      socket
@@ -283,21 +310,22 @@ defmodule ExboostWeb.ChatLive do
       Query: #{query}
       """
 
+      search_params = get_search_settings(socket)
+
+      chat_params =
+        get_chat_settings(socket)
+        |> Keyword.put(:messages, formatted_messages)
+
       {message, search_context} =
-        with false <- is_nil(socket.assigns.current_user.search_api_key),
-             {:ok, search_query} <-
+        with {:ok, search_query} <-
                LLM.chat(
                  rewriter_prompt,
-                 messages: formatted_messages,
-                 model: socket.assigns.current_user.llm_model,
-                 base_url: socket.assigns.current_user.llm_base_url,
-                 api_key: socket.assigns.current_user.llm_api_key
+                 chat_params
                ),
              {:ok, search_results} <-
-               Search.search(search_query,
-                 engine: socket.assigns.current_user.search_engine,
-                 api_key: socket.assigns.current_user.search_api_key,
-                 num_results: @sources_n
+               Search.search(
+                 search_query,
+                 search_params
                ),
              {:ok, message} <-
                Chats.update_message(message, %{
@@ -324,14 +352,16 @@ defmodule ExboostWeb.ChatLive do
         )
       end
 
+      chat_params =
+        get_chat_settings(socket)
+        |> Keyword.put(:messages, formatted_messages)
+        |> Keyword.put(:handler, llm_stream_handler)
+        |> Keyword.put(:search_results, search_context)
+
       response =
-        case LLM.chat(query,
-               messages: formatted_messages,
-               handler: llm_stream_handler,
-               search_results: search_context,
-               model: socket.assigns.current_user.llm_model,
-               base_url: socket.assigns.current_user.llm_base_url,
-               api_key: socket.assigns.current_user.llm_api_key
+        case LLM.chat(
+               query,
+               chat_params
              ) do
           {:ok, response} ->
             response
@@ -354,24 +384,23 @@ defmodule ExboostWeb.ChatLive do
     {:noreply, socket}
   end
 
-  def handle_info({:summarize, chat, messages} = message, socket) do
-    IO.inspect(message, label: "SUMMARIZE")
-
+  def handle_info({:summarize, chat, messages} = _message, socket) do
     formatted_messages = build_messages(messages)
 
     summary_prompt = """
-    Write an extremely short and concise summary label of this conversation. Your label should always be at most 5 words long even shorter if possible. Only respond with the summary label and nothing else.
+    Write an extremely short and concise summary label of this conversation. Your label should always be at most 5 words loßng even shorter if possible. Only respond with the summary label and nothing else.
 
     Label:
     """
 
+    chat_params =
+      get_chat_settings(socket)
+      |> Keyword.put(:messages, formatted_messages)
+
     with {:ok, summary} <-
            LLM.chat(
              summary_prompt,
-             messages: formatted_messages,
-             model: socket.assigns.current_user.llm_model,
-             base_url: socket.assigns.current_user.llm_base_url,
-             api_key: socket.assigns.current_user.llm_api_key
+             chat_params
            ),
          {:ok, chat} <- Chats.update_chat(chat, %{summary: summary, summarized: true}) do
       {:noreply, find_update(socket, :chats, chat.id, fn _ -> chat end)}
@@ -398,6 +427,30 @@ defmodule ExboostWeb.ChatLive do
      socket
      |> assign(message: message)
      |> find_update(:messages, message_id, fn _ -> message end)}
+  end
+
+  def handle_info(:reset, socket) do
+    socket =
+      if socket.assigns.rate_limit do
+        Process.send_after(self(), :reset, 60_000)
+
+        new_reset = socket.assigns.rate_limit_reset - 1
+
+        {amount, reset} =
+          if new_reset == 0 do
+            RateLimiter.get_quota(socket.assigns.current_user.id)
+          else
+            {socket.assigns.rate_limit_amount, new_reset}
+          end
+
+        socket
+        |> assign(rate_limit_amount: amount)
+        |> assign(rate_limit_reset: reset)
+      else
+        socket
+      end
+
+    {:noreply, socket}
   end
 
   defp trigger_summarize(nil, _messages), do: nil
@@ -467,14 +520,22 @@ defmodule ExboostWeb.ChatLive do
   defp check_llm_settings(socket) do
     current_user = socket.assigns.current_user
 
-    case User.llm_changeset(current_user, %{}) do
+    case User.llm_changeset_unlimited(current_user, %{}) do
       %Ecto.Changeset{valid?: true} ->
+        IO.puts("LLM TRUE")
+
         socket
+        |> assign(rate_limit: false)
 
       %Ecto.Changeset{valid?: false} ->
+        IO.puts("LLM FALSE")
+        Process.send_after(self(), :reset, 60_000)
+        {amount, reset} = RateLimiter.get_quota(current_user.id)
+
         socket
-        |> put_flash(:error, "Please check LLM settings")
-        |> redirect(to: ~p"/users/settings")
+        |> assign(rate_limit: true)
+        |> assign(rate_limit_amount: amount)
+        |> assign(rate_limit_reset: reset)
     end
   end
 
@@ -508,5 +569,40 @@ defmodule ExboostWeb.ChatLive do
       index ->
         assign(socket, collection_name, List.update_at(collection, index, update_fn))
     end
+  end
+
+  def get_chat_settings(socket) do
+    current_user = socket.assigns.current_user
+
+    if socket.assigns.rate_limit do
+      [
+        model: Application.fetch_env!(:exboost, :openai_model),
+        base_url: Application.fetch_env!(:exboost, :openai_base_url),
+        api_key: Application.fetch_env!(:exboost, :openai_api_key)
+      ]
+    else
+      [
+        model: current_user.llm_model,
+        base_url: current_user.llm_base_url,
+        api_key: current_user.llm_api_key
+      ]
+    end
+  end
+
+  def get_search_settings(socket) do
+    current_user = socket.assigns.current_user
+
+    if socket.assigns.rate_limit do
+      [
+        engine: Application.fetch_env!(:exboost, :search_engine),
+        api_key: Application.fetch_env!(:exboost, :search_api_key)
+      ]
+    else
+      [
+        engine: current_user.search_engine,
+        api_key: current_user.search_api_key
+      ]
+    end
+    |> Keyword.put(:num_results, @sources_n)
   end
 end

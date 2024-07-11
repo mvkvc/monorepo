@@ -17,9 +17,7 @@ defmodule Exboost.Search.Serper do
            headers: headers,
            body: Jason.encode!(body)
          ) do
-      {:ok, %Req.Response{status: 200, body: %{"organic" => results}}} = response ->
-        IO.inspect(response, label: "serper response")
-
+      {:ok, %Req.Response{status: 200, body: %{"organic" => results}}} = _response ->
         output =
           Enum.reduce(results, [], fn
             %{"title" => title, "link" => url, "snippet" => text}, acc ->
