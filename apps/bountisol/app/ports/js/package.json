@@ -1,0 +1,27 @@
+{
+  "name": "bountisol",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/main.cjs",
+    "build": "esbuild src/main.cts --bundle --platform=node --outfile=dist/main.cjs",
+    "dev": "ts-node src/main.cts",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@bonfida/spl-name-service": "^2.0.0-alpha.25",
+    "@solana/web3.js": "^1.87.6",
+    "@web3auth/sign-in-with-solana": "^3.0.0",
+    "bs58": "^5.0.0",
+    "esbuild": "^0.20.0",
+    "json-schema-to-gbnf": "https://github.com/mvkvc/json-schema-to-gbnf.git",
+    "main": "^1000.0.1",
+    "portboy": "../../../../../os/portboy/clients/js/"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "prettier": "^3.1.0",
+    "ts-node": "^10.8.1",
+    "typescript": "^5.3.3"
+  }
+}

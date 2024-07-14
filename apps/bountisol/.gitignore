@@ -1,0 +1,13 @@
+.direnv/
+.nix_hex/
+.nix_mix/
+assets/og/
+.secret
+*.code-workspace
+.elixir-tools/
+.history/
+erl_crash.dump
+.elixir_ls/
+.vscode/
+.env.*
+!.env.*_

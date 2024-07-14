@@ -1,0 +1,49 @@
+<div class="bg-transparent">
+  <div class="relative isolate px-6 pt-14 lg:px-8">
+    <.gradient_blob
+      position="top"
+      seed={6}
+      offset="0"
+      width={80}
+      rotate={10}
+      from_color="#66cc8a"
+    />
+    <.hero>
+      Your work is more than a search.
+      <:subtitle>
+        Use Exboost to use the latest LLMs with a diverse set of data sources customizable at runtime. Combine public and private online data and even local files to ensure the most relevant answers.
+      </:subtitle>
+      <:actions>
+        <div class="flex flex-col items-center space-y-8">
+          <button class="rounded-md bg-violet-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">
+            <a href="/chat">Chat now<span aria-hidden="true">→</span></a>
+          </button>
+          <div class="mt-10 flex items-center justify-center gap-x-6">
+            <.form
+              for={@form}
+              phx-submit="register_interest"
+              class="flex items-center justify-center  space-x-4 flex-row"
+            >
+              <input
+                type="email"
+                field={:email}
+                value=""
+                name="email"
+                placeholder="Enter your email"
+                required
+                class="w-72 rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm !mt-0"
+              />
+              <button
+                type="submit"
+                class="rounded-md bg-violet-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+              >
+                Join mailing list
+              </button>
+            </.form>
+          </div>
+        </div>
+      </:actions>
+    </.hero>
+    <.gradient_blob position="bottom" seed={831} offset="33" width={80} rotate={-20} />
+  </div>
+</div>

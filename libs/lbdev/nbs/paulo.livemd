@@ -1,0 +1,110 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# paulo
+
+## Section
+
+```elixir
+defmodule MyMacro do
+  defmacro define_implementation(mod, call, do: block) do
+    {fun_name, context, args} = call
+
+    IO.inspect(fun_name)
+    arity = length(args)
+
+    quote do
+      f = fn unquote_splicing(args) ->
+        unquote(block)
+      end
+
+      Process.put({unquote(mod), unquote(fun_name), unquote(arity)}, f)
+      :ok
+    end
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+warning: variable "context" is unused (if the variable is not meant to be used, prefix it with an underscore)
+  nbs/paulo.livemd#cell:wa7endybipp5wee7ovybrowctdyujgjx:3: MyMacro.define_implementation/3
+
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, MyMacro, <<70, 79, 82, 49, 0, 0, 8, ...>>, {:define_implementation, 3}}
+```
+
+```elixir
+import MyMacro
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+MyMacro
+```
+
+```elixir
+defmodule M do
+  def f(x, y) do
+    impl = Process.get({__MODULE__, :f, 2}, fn x, y -> raise "not implemented" end)
+    impl.(x, y)
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, M, <<70, 79, 82, 49, 0, 0, 4, ...>>, nil}
+```
+
+```elixir
+MyMacro.define_implementation M, f(x, y) do
+  x + y
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:f
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+```elixir
+expr = M.f(10, 20)
+IO.inspect("ADDING: #{expr}")
+```
+
+```elixir
+MyMacro.define_implementation M, f(x, y) do
+  x - y
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:f
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+```elixir
+expr = M.f(10, 20)
+IO.inspect("SUBTRACT: #{expr}")
+```

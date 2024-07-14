@@ -1,0 +1,165 @@
+# Untitled notebook
+
+## Section
+
+```elixir
+defmodule MyMacro do
+  defmacro define_implementation(mod, call, do: block) do
+    {fun_name, context, args} = call
+    arity = length(args)
+
+    ast = Macro.escape(block)
+
+    quote do
+      f = fn unquote_splicing(args) ->
+        unquote(block)
+      end
+
+      Process.put({unquote(mod), unquote(fun_name), unquote(arity), :ast}, unquote(ast))
+
+      Process.put({unquote(mod), unquote(fun_name), unquote(arity)}, f)
+
+      :ok
+    end
+  end
+
+  defmacro generate_functions(functions) do
+    for {name, arity} <- functions do
+      args = for i <- 0..(arity - 1), do: {String.to_atom("arg#{i}"), [], Elixir}
+
+      quote do
+        def unquote(name)(unquote_splicing(args)) do
+          impl =
+            Process.get({__MODULE__, unquote(name), unquote(arity)}, fn unquote_splicing(args) ->
+              raise "not implemented"
+            end)
+
+          impl.(unquote_splicing(args))
+        end
+      end
+    end
+  end
+
+  def get_module_ast(module_name) do
+    ast_list =
+      Process.get()
+      |> Enum.filter(fn {pid, _} -> pid == self() end)
+      |> hd()
+      |> Process.info(:dictionary)
+      |> Enum.filter(fn {k, _} -> is_tuple(k) and elem(0, k) == module_name end)
+      |> Enum.map(fn {{module_name, fname, arity, :ast}, ast} -> {fname, arity, ast} end)
+
+    quote do
+      defmodule unquote(module_name) do
+        (unquote_splicing(ast_list))
+      end
+    end
+  end
+end
+```
+
+```elixir
+# require MyMacro
+import MyMacro
+
+defmodule M do
+  MyMacro.generate_functions([
+    {:f, 2},
+    {:g, 3}
+  ])
+end
+```
+
+```elixir
+MyMacro.define_implementation M, f(x, y) do
+  x + y
+end
+
+expr = M.f(10, 20)
+IO.inspect("ADDING: #{expr}")
+```
+
+```elixir
+MyMacro.define_implementation M, f(x, y) do
+  x - y
+end
+
+expr = M.f(10, 20)
+IO.inspect("SUBTRACT: #{expr}")
+```
+
+```elixir
+MyMacro.define_implementation M, g(x, y, z) do
+  x * y * z
+end
+
+expr = M.g(2, 3, 4)
+IO.inspect("MULTIPLY: #{expr}")
+```
+
+```elixir
+MyMacro.define_implementation M, g(x, y, z) do
+  x ** y ** z
+end
+
+expr = M.g(2, 3, 4)
+IO.inspect("POWER: #{expr}")
+```
+
+```elixir
+path =
+  String.trim(__ENV__.file)
+  |> String.split("#cell")
+  |> List.first()
+
+filename =
+  path
+  |> String.split("/")
+  |> List.last()
+  |> String.trim(".livemd")
+```
+
+```elixir
+proc = Process.get()
+```
+
+```elixir
+input =
+  proc
+  |> Enum.filter(fn
+    {{_, _, _, :ast}, _} -> true
+    _ -> false
+  end)
+```
+
+```elixir
+target =
+  quote do
+    defmodule M do
+      def f(x, y) do
+        x + y
+      end
+
+      def g(x, y, z) do
+        x * y * z
+      end
+    end
+  end
+```
+
+```elixir
+ts =
+  target
+  |> Macro.to_string()
+```
+
+```elixir
+path =
+  ("lib/lbdev/" <> filename <> ".ex")
+  |> Path.absname()
+  |> Path.expand()
+```
+
+```elixir
+# File.write!(path, ts)
+```

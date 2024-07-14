@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="csrf-token" content={csrf_token_value()}>
+    <%= live_title_tag assigns[:page_title] || "Pinkie", suffix: " · Phoenix Framework" %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body class="bg-light dark:bg-dark text-black dark:text-white min-h-screen px-5 py-5">
+    <header class="mb-5">
+      <section>
+        <nav class="flex justify-end items-center text-center space-x-5">
+          <%= live_render(@conn, PinkieWeb.DarkModeLive, id: "dark-mode-container") %>
+          <ul class="text-center">
+            <!-- <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li> -->
+            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
+            <% end %>
+          </ul>
+          <%= render "_user_menu.html", assigns %>
+        </nav>
+        <!-- <a href="https://phoenixframework.org/" class="flex justify-center items-center">
+          <img src={Routes.static_path(@conn, "/images/phoenix.png")} alt="Phoenix Framework Logo" class="mx-auto max-w-md"/>
+        </a> -->
+      </section>
+    </header>
+    <%= @inner_content %>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<.header>
+  Job <%= @job.id %>
+  <%!-- <:actions>
+    <.link patch={~p"/jobs/#{@job}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit job</.button>
+    </.link>
+  </:actions> --%>
+</.header>
+
+<.list>
+  <:item title="ID"><%= @job.id %></:item>
+  <:item title="Created"><%= @job.inserted_at |> NaiveDateTime.to_string() %></:item>
+  <:item title="Status"><%= @job.status %></:item>
+</.list>
+
+<div class="mt-11">
+  <%= for image <- @job.images do %>
+    <div class="flex items-center sm:ml-4 md:ml-[20%] mt-4 space-x-4">
+      <img
+        src={"https://cdn.critique.pics/critique/" <> image.link}
+        style="width: 200px; max-height: 400px;"
+      />
+      <div class="flex flex-col">
+        <p>ID: <%= image.id %></p>
+        <p>Prediction: <%= image.prediction || "pending" %></p>
+      </div>
+    </div>
+  <% end %>
+</div>
+<.back navigate={~p"/jobs"}>Back to jobs</.back>
+
+<.modal :if={@live_action == :edit} id="job-modal" show on_cancel={JS.patch(~p"/jobs/#{@job}")}>
+  <.live_component
+    module={CritiqueWeb.JobLive.FormComponent}
+    id={@job.id}
+    title={@page_title}
+    action={@live_action}
+    job={@job}
+    patch={~p"/jobs/#{@job}"}
+  />
+</.modal>

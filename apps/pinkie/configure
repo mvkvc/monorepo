@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ ! -d .git ]; then
+    echo "Must be run from the root of the repository."
+    exit 1
+fi
+
+if [[ -z "$PINKIE_HOME" || -z "$GATEWAY_HOME" || -z "$MIX_HOME" || -z "$HEX_HOME" ]]; then
+    echo "Ensure the \$PINKIE_HOME, \$GATEWAY_HOME, \$MIX_HOME, and \$HEX_HOME environment variables are set. (They are usually set in the Nix flake.)"
+    exit 1
+fi
+
+(cd "./pinkie" &&
+    mkdir -p "$MIX_HOME" &&
+    mkdir -p "$HEX_HOME" &&
+    mix local.rebar --force --if-missing &&
+    mix "do" local.rebar --force --if-missing &&
+    mix "do" local.hex --force --if-missing &&
+    if [ ! -f "$MIX_HOME/escripts/livebook" ]; then mix escript.install hex livebook; fi &&
+    mix deps.get &&
+    npm install)
+
+(cd "./gateway" &&
+    go mod download &&
+    go mod vendor)

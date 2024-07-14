@@ -1,0 +1,56 @@
+VERSION 0.7
+
+ARG --global DEBIAN_VERSION=bullseye-20230109-slim
+ARG --global ELIXIR_VERSION=1.14.5
+ARG --global OTP_VERSION=25.2.1
+
+deps:
+    FROM hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}
+    RUN mkdir -p /app
+    WORKDIR /app
+    RUN mix local.hex --force && \
+        mix local.rebar --force
+    COPY mix.exs .
+    COPY mix.lock .
+    RUN mix deps.get
+
+test:
+    FROM +deps
+    ENV MIX_ENV=test
+    COPY ./ .
+    RUN mix test
+
+build:
+    FROM +deps
+    ENV MIX_ENV=prod
+    RUN mix release
+    SAVE ARTIFACT ./_build/
+
+docker:
+    FROM debian:${DEBIAN_VERSION}
+    RUN mkdir -p /app
+    WORKDIR /app
+    COPY +build/_build/ ./_build/
+    CMD ["/app/_build/prod/rel/walter/bin/walter", "start"]
+    SAVE IMAGE walter:latest
+    SAVE IMAGE --push registry.fly.io/mvkvc-walter:latest
+
+deploy:
+    WAIT
+        BUILD +docker
+    END
+    LOCALLY
+    RUN fly deploy \
+        --image registry.fly.io/mvkvc-walter:latest \
+        --strategy immediate
+
+dev:
+    BUILD +docker
+    LOCALLY
+    WITH DOCKER --load walter:latest=+docker
+        RUN docker run \
+                --rm \
+                --network host \
+                --env-file .secret \
+                walter:latest
+    END

@@ -1,0 +1,28 @@
+services:
+  db:
+    image: ankane/pgvector
+    container_name: db_exboost_dev
+    ports:
+       - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db_exboost_dev
+      PGSSLMODE: allow
+    volumes:
+      - ./app/.db/data:/var/lib/postgresql/data
+    restart: unless-stopped
+    
+  exboost:
+    build:
+      context: ./app
+      dockerfile: ./Dockerfile
+      target: "dev"
+    command: /bin/bash -c "mix ecto.setup && mix phx.server"
+    env_file:
+      - path: ./app/.env
+    network_mode: "host"
+    depends_on:
+      - db
+    restart: unless-stopped
+

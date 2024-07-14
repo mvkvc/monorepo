@@ -1,0 +1,32 @@
+name: utils_makeme_generate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/README.md"
+      - "utils/makeme/**"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+      - run: |
+          cargo run -- \
+          --target ../../README.md \
+          --root ../.. \
+          --levels 2
+        working-directory: utils/makeme
+      - run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ./README.md
+          git commit -m "Update README.md" || echo "No changes to commit"
+          git push

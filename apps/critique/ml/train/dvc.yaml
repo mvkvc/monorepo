@@ -1,0 +1,11 @@
+stages:
+  unzip:
+    cmd:
+      - mkdir ml/data/artifact-dataset/
+      - unzip ml/data/artifact-dataset.zip -d ml/data/artifact-dataset/
+    deps:
+      - ml/data/artifact-dataset.zip
+    outs:
+      - ml/data/artifact-dataset:
+          cache: false
+          persist: true

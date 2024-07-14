@@ -1,0 +1,6 @@
+.elixir_ls
+.history
+.vscode
+*.sublime-*
+.env
+**/.DS_STORE

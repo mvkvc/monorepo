@@ -1,0 +1,31 @@
+image:
+  # gitpod/workspace-full
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: |
+      mise install
+
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - erlang-ls.erlang-ls
+    - elixir-lsp.elixir-ls
+    - victorbjorklund.phoenix
+    - ms-python.python
+    - julialang.language-julia
+    - scala-lang.scala
+    - scalameta.metals
+    - rust-lang.rust-analyzer
+    - franneck94.c-cpp-runner
+    - mads-hartmann.bash-ide-vscode
+    - foxundermoon.shell-format
+    - redhat.vscode-yaml
+    - tamasfe.even-better-toml
+    - mkhl.direnv
+
+gitConfig:
+    pull.rebase: "false"
+    init.defaultBranch: main
+    push.autoSetupRemote: "true"
+    

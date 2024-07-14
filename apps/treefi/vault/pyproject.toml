@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "vault"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+eth-ape = "^0.7.5"
+ape-vyper = "^0.7.0"
+ape-arbitrum = "^0.7.1"
+pytest = "^7.4.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

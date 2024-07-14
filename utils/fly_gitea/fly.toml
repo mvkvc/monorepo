@@ -1,0 +1,49 @@
+# fly.toml file generated for fly-gitea on 2023-04-29T00:19:34-04:00
+
+app = "fly-gitea"
+kill_signal = "SIGINT"
+kill_timeout = 5
+primary_region = "yyz"
+processes = []
+
+[build]
+
+[env]
+  GITEA_CUSTOM = "/app/custom/"
+  GITEA__database__DB_TYPE = "sqlite3"
+  GITEA__database__PATH = "/data/gitea/gitea.db"
+  GITEA__security__INSTALL_LOCK = "true"
+  GITEA__server__DOMAIN = "fly-gitea.fly.dev"
+  GITEA__server__ROOT_URL = "https://fly-gitea.fly.dev"
+  GITEA__server__SSH_DOMAIN = "fly-gitea.fly.dev"
+  GITEA__service__DISABLE_REGISTRATION = "false"
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+
+# persist data
+[[mounts]]
+  destination = "/data"
+  source = "fly_gitea_data"
+
+# ssh traffic
+[[services]]
+  internal_port = 22
+  protocol = "tcp"
+  [[services.ports]]
+    port = 22
+
+# https traffic
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    force_https = true
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

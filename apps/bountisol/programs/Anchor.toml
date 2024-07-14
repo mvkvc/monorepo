@@ -1,0 +1,21 @@
+[toolchain]
+
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+bountisol = "EkcjDCwoF7ffZox75WTqqtkirDEWdcNF4oUjigqEEmut"
+
+[programs.devnet]
+bountisol = "EkcjDCwoF7ffZox75WTqqtkirDEWdcNF4oUjigqEEmut"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "devnet"
+wallet = "/home/mvkvc/.config/solana/id.json"
+
+[scripts]
+test = "npm run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

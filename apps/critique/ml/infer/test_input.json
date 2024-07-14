@@ -1,0 +1,7 @@
+{
+    "webhook": "https://critique.pics/webhook",
+    "input": [
+        {"id": 1, "link": "http://example.com/1"},
+        {"id": 2, "link": "http://example.com/2"}
+    ]
+}
