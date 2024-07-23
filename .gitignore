@@ -1,12 +1,4 @@
-**/.elixir_ls/
-**/erl_crash.dump
-**/errors.pot
-**/.DS_Store
-**/*/.env
-**/.db/
-**/.mq/
-**/.DS_Store
-**/.idea
-*.code-workspace
-.history/
-.vscode/
+**/.vscode/
+**/.idea/
+**/*.db
+**/.env

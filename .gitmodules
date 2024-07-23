@@ -1,15 +1,3 @@
-[submodule "vendor/tt-buda-demos"]
-	path = vendor/tt-buda-demos
-	url = https://github.com/mvkvc/tt-buda-demos.git
-[submodule "vendor/phoenix_live_react"]
-	path = vendor/phoenix_live_react
-	url = https://github.com/mvkvc/phoenix_live_react.git
-[submodule "vendor/litestream"]
-	path = vendor/litestream
-	url = https://github.com/mvkvc/litestream.git
-[submodule "vendor/dockyard_academy"]
-	path = vendor/dockyard_academy
-	url = https://github.com/mvkvc/dockyard_academy.git
 [submodule "vendor/rustlings"]
 	path = vendor/rustlings
 	url = https://github.com/mvkvc/rustlings.git
@@ -19,18 +7,12 @@
 [submodule "vendor/fpinscala"]
 	path = vendor/fpinscala
 	url = https://github.com/mvkvc/fpinscala.git
-[submodule "vendor/replicant"]
-	path = vendor/replicant
-	url = https://github.com/mvkvc/replicant.git
 [submodule "vendor/fastbook_elixir"]
 	path = vendor/fastbook_elixir
 	url = https://github.com/mvkvc/fastbook_elixir.git
 [submodule "vendor/MultiPL-E"]
 	path = vendor/MultiPL-E
 	url = https://github.com/mvkvc/MultiPL-E.git
-[submodule "vendor/codecrafters_http_rust"]
-	path = vendor/codecrafters_http_rust
-	url = https://git.codecrafters.io/0033fcfaf73df2ec
-[submodule "vendor/tenstorrent_puzzles"]
-	path = vendor/tenstorrent_puzzles
-	url = https://github.com/mvkvc/tenstorrent_puzzles.git
+[submodule "vendor/babelcode"]
+	path = vendor/babelcode
+	url = https://github.com/mvkvc/babelcode.git

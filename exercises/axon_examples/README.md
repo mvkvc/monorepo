@@ -1,7 +1,7 @@
 ---
 name: axon_examples
 desc: Examples showing how to use the Axon deep learning library.
-tech: Elixir, Nx, Axon, Skypilot
+tech: Elixir, Nx, Axon
 ---
 
 # axon_examples

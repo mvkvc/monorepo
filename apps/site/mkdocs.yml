@@ -1,0 +1,19 @@
+site_name: mvkvc
+site_url: https://mvkv.vc
+theme:
+  name: material
+  palette:
+    scheme: slate
+plugins:
+  - blog:
+      blog_dir: .
+  - search
+  - offline
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

@@ -1,9 +1,3 @@
----
-name: makeme
-desc: Generates the list of projects you are currently reading.
-tech: Rust
----
-
 # makeme
 
 Generates the project list for monorepo `README.md`.
@@ -18,4 +12,11 @@ tech: string (optional)
 link: string (optional)
 show: boolean (default true)
 ---
+```
+
+And inserts result in in target file between:
+
+```
+<!-- MAKEME START -->
+<!-- MAKEME END -->
 ```

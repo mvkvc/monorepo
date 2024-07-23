@@ -1,6 +1,0 @@
-.DS_Store
-.elixir_ls
-erl_crash.dump
-**/.venv
-**/__pycache__
-data/
