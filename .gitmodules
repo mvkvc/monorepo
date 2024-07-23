@@ -10,9 +10,30 @@
 [submodule "vendor/fastbook_elixir"]
 	path = vendor/fastbook_elixir
 	url = https://github.com/mvkvc/fastbook_elixir.git
-[submodule "vendor/MultiPL-E"]
-	path = vendor/MultiPL-E
-	url = https://github.com/mvkvc/MultiPL-E.git
 [submodule "vendor/babelcode"]
 	path = vendor/babelcode
 	url = https://github.com/mvkvc/babelcode.git
+[submodule "vendor/replicant"]
+	path = vendor/replicant
+	url = https://github.com/mvkvc/replicant.git
+[submodule "vendor/tinygrad"]
+	path = vendor/tinygrad
+	url = https://github.com/mvkvc/tinygrad.git
+[submodule "vendor/MultiPL-E"]
+	path = vendor/MultiPL-E
+	url = https://github.com/mvkvc/MultiPL-E.git
+[submodule "vendor/Tensor-Puzzles"]
+	path = vendor/Tensor-Puzzles
+	url = https://github.com/mvkvc/Tensor-Puzzles.git
+[submodule "vendor/tt-buda-demos"]
+	path = vendor/tt-buda-demos
+	url = https://github.com/mvkvc/tt-buda-demos.git
+[submodule "vendor/tt-buda"]
+	path = vendor/tt-buda
+	url = https://github.com/mvkvc/tt-buda.git
+[submodule "vendor/tt-budabackend"]
+	path = vendor/tt-budabackend
+	url = https://github.com/mvkvc/tt-budabackend.git
+[submodule "vendor/tt-metal"]
+	path = vendor/tt-metal
+	url = https://github.com/mvkvc/tt-metal.git
