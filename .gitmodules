@@ -46,3 +46,15 @@
 [submodule "vendor/rager"]
 	path = vendor/rager
 	url = https://github.com/mvkvc/rager.git
+[submodule "vendor/bumblebee"]
+	path = vendor/bumblebee
+	url = https://github.com/mvkvc/bumblebee.git
+[submodule "vendor/axon"]
+	path = vendor/axon
+	url = https://github.com/mvkvc/axon.git
+[submodule "vendor/nx"]
+	path = vendor/nx
+	url = https://github.com/mvkvc/nx.git
+[submodule "vendor/vortex"]
+	path = vendor/vortex
+	url = https://github.com/mvkvc/vortex.git
