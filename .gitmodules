@@ -37,3 +37,9 @@
 [submodule "vendor/tt-metal"]
 	path = vendor/tt-metal
 	url = https://github.com/mvkvc/tt-metal.git
+[submodule "vendor/tt-tvm"]
+	path = vendor/tt-tvm
+	url = https://github.com/mvkvc/tt-tvm.git
+[submodule "vendor/transformers"]
+	path = vendor/transformers
+	url = https://github.com/mvkvc/transformers.git
