@@ -1,2 +1,0 @@
-defmodule Articuno do
-end

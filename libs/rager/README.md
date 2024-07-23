@@ -1,3 +1,0 @@
-# rager
-
-For serious RAGers.
