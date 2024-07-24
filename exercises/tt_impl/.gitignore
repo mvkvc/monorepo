@@ -1,0 +1,7 @@
+.buda/
+.venv/
+**/__pycache__
+**/generated_modules
+**/tt_build
+.pkl_memoize_py3/
+**/*_netlist.yaml
